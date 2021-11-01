@@ -1,4 +1,4 @@
-import { moviePreviewType, useFetchSettingType, tvShowPreviewType } from "../../types/types"
+import { moviePreviewType, useFetchSettingType } from "../../types/types"
 import MoviePreview from "../Movie/MoviePreview"
 import Hero from "./Hero"
 import useFetch from "../../customHooks/useFetch"

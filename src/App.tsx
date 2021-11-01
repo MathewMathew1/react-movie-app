@@ -8,7 +8,7 @@ import MovieInfo from './components/Movie/MovieInfo';
 import TvShowInfo from './components/TvShow/TvShowInfo';
 import ActorInfo from './components/Actors/ActorsInfo';
 import { Switch, Route} from "react-router-dom";
-import { InputGroup, SplitButton, Dropdown, FormControl, Navbar, Container, Nav, Alert} from 'react-bootstrap';
+import { InputGroup, SplitButton, Dropdown, FormControl, Navbar, Container, Nav} from 'react-bootstrap';
 import { useState } from 'react';
 import useFetch from './customHooks/useFetch';
 import { BASE_URL_OF_API } from './ApiVariables';
@@ -75,23 +75,6 @@ const App = (props: any) => {
       })
       .catch(error=>{console.log(error)})
 
-  }
-
-  const getToken = async (): Promise<string> => {
-    
-    const { signal } = controller
-    let token: string = ''
-    await fetch(BASE_URL_OF_API+'/authentication/token/new?api_key=054d81c0a2132b241e5db5c64009ef65',{
-        method: "GET",
-        signal,
-      })
-      .then(response => response.json())
-      .then(response => {
-          token = response.request_token
-          return
-      })
-      .catch(error=>{console.log(error)})
-    return token
   }
 
   const Login = async () => {

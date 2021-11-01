@@ -35,7 +35,7 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}) => {
 
     useEffect(() => {
         document.title = tvShow.name
-    }, []);
+    }, [tvShow.name]);
 
     const date = (date: string): string =>{
         let dateOfCreation = new Date(date)
@@ -103,7 +103,10 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}) => {
                 </div>
                 { showedPanel === INFORMATION_TO_SHOW[0] ? (
                     <div className="secondary-info">
-                        <div> <a target="_blank" href={tvShow.homepage}>Homepage</a>,&nbsp; Original Language: {tvShow.originalLanguage},&nbsp;</div>
+                        <div> 
+                            <a rel="noreferrer" target="_blank" href={tvShow.homepage}>Homepage</a>,&nbsp; 
+                            Original Language: {tvShow.originalLanguage},&nbsp;
+                        </div>
                         <div>Number Of Episodes: {tvShow.numberOfEpisodes},&nbsp; Number Of Seasons: {tvShow.numberOfSeasons}</div>
                         <div>Genres: {listOFGenres().join(", ")}</div>
                         <div>Status: {tvShow.status},&nbsp; In production: {isShowInProduction()}</div>
@@ -126,7 +129,7 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}) => {
                                         <tr key={index}>
                                             <td>{value.name}</td>
                                             <td>{value.origin_country}</td>
-                                            <td><img src={BASE_URL_FOR_IMAGES("w185") + value.logo_path}></img></td>
+                                            <td><img alt={value.name} src={BASE_URL_FOR_IMAGES("w185") + value.logo_path}></img></td>
                                         </tr>
                                     )
                             })}

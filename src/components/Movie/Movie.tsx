@@ -25,7 +25,7 @@ const Movie = ({movie}: { movie: movieFullType}) => {
 
     useEffect(() => {
         document.title = movie.fullTitle
-    }, []);
+    }, [movie.fullTitle]);
 
     const date = (date: string): string =>{
         let dateOfCreation = new Date(date)
@@ -51,7 +51,7 @@ const Movie = ({movie}: { movie: movieFullType}) => {
             <div className="Info-panel">
                 <div className="secondary-info">
                     <div>
-                        {movie.homepage!==""? <span> <a href={movie.homepage} target="_blank">Homepage</a>,&nbsp;</span>:null} 
+                        {movie.homepage!==""? <span> <a rel="noreferrer" href={movie.homepage} target="_blank">Homepage</a>,&nbsp;</span>:null} 
                         Original Language: {movie.originalLanguage},&nbsp; Status: {movie.status}
                     </div>
                     <div>Directed by: {movie.directors.join(", ")}</div>

@@ -1,5 +1,5 @@
 
-import { actorInfoType, moviePreviewType } from "../../types/types"
+import { actorInfoType } from "../../types/types"
 import MiniMoviePreview from "../Movie/MiniMoviePreview"
 import { useState } from "react"
 
@@ -19,7 +19,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
 
         var age = firstDate.getFullYear() - secondDate.getFullYear()
         var monthDifference = firstDate.getMonth() - secondDate.getMonth()
-        let beforeBirthday = (monthDifference < 0 || monthDifference === 0 && firstDate.getDate() < secondDate.getDate() )
+        let beforeBirthday = ((monthDifference < 0 || monthDifference === 0) && firstDate.getDate() < secondDate.getDate() )
         if (beforeBirthday) {
             age--
         }
@@ -73,7 +73,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
             <div className="Info-panel">
                 <div className="secondary-info no-flex margin-top3">
                     <div>
-                        {actor.homepage!==""? <span> <a href={actor.homepage} target="_blank">Homepage</a>,&nbsp;</span>:null} 
+                        {actor.homepage!==""? <span> <a rel="noreferrer" href={actor.homepage} target="_blank">Homepage</a>,&nbsp;</span>:null} 
                         Known from: {actor.department}
                     </div>
                     <div>Nicknames:&nbsp; 

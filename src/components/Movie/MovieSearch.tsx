@@ -68,7 +68,7 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
             document.title = filter["name"]
         }
 
-    }, []);
+    }, [location.search]);
 
     return(
         <div>
