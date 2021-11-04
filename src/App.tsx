@@ -55,7 +55,7 @@ const App = (props: any) => {
       param = `?genre_id=${id}`
     }
     
-    window.location.href = "/search/movies"+param
+    window.location.href = "/search/movies" + param + "&page=1"
 
   }
 

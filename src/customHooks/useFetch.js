@@ -32,6 +32,10 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
     
     
     const fetchDataStatus = useAsync(async () => {
+        if(urlToFetch === ''){
+            return
+        }
+
         let savedDataExist = saveToSessionStorageState===true && sessionStorage.getItem(sessionStorageNameState)
         if(savedDataExist){
             return JSON.parse(sessionStorage.getItem(sessionStorageNameState))

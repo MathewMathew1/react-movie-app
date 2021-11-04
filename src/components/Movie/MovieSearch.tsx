@@ -7,36 +7,21 @@ import queryString from "query-string"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import { useState, useEffect } from "react"
 import LoadingCircle from "../../mini-components/LoadingCircle"
-import { Pagination} from "react-bootstrap"
+import PaginationComponent from "../../mini-components/Pagination"
 import MovieNotFound  from "../NotFound/MovieNotFound"
 
 
 const MovieSearch = ({location}: {location: any}): JSX.Element => {
     const [searchKeyWord, setSearchKeyWord] = useState('')
-
-    const getUrl = (): string => {
-        let filter: queryString.ParsedQuery<string> = queryString.parse(location.search)
-        let url: string =''
-        if("genre_id" in filter){
-            url = BASE_URL_OF_API + 
-            `/discover/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&page=1&include_adult=false&page=1` 
-            + `&with_genres=${filter["genre_id"]}`
-        }
-        else if( "name" in filter){
-            url = BASE_URL_OF_API + 
-            `/search/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=1` 
-            + `query=${filter["name"]}`
-        }
-        return url
-    }
+    const [totalResults, setTotalResults] = useState(0)
+    const [linkToPagination, setLinkToPagination] = useState('')
+    const getMovies = useFetch('',{},[]) 
     
-
-    const getMovies = useFetch(getUrl(),{},[]) 
-    
+    console.log(getMovies)
 
     const showTwelveMovies = (movies: any): JSX.Element[] => {
         let n = Math.min(20, movies.length)
-        var elements = [];
+        let elements: any[] = [];
         for(let i=0; i < n; i++){
             elements.push(<MoviePreview key={i} movie={moviePreviewType(getMovies.fetchDataStatus.value.results[i])} number={i}></MoviePreview>);
         }
@@ -57,17 +42,39 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
     }
 
     useEffect(() => {
+        
         let filter: queryString.ParsedQuery<string> = queryString.parse(location.search)
-
+        let url: string =''
+        let page: string | string[] = filter["page"]
+        let link: string = '?'
+        
         if("genre_id" in filter && typeof(filter["genre_id"])==='string' ){
-            setSearchKeyWord(filter["genre_id"])
-            document.title = filter["genre_id"]
+            
+            link = `genre_id=` + filter["genre_id"]
+            
+            let searchedGenre = filter["genre_id"]
+            setSearchKeyWord(searchedGenre)
+            document.title = searchedGenre
+            url = BASE_URL_OF_API + 
+            `/discover/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&page=${page}&include_adult=false` 
+            + `&with_genres=${searchedGenre}`
+        
         }
         else if( "name" in filter && typeof(filter["name"])==='string'){
-            setSearchKeyWord(filter["name"])
-            document.title = filter["name"]
-        }
+            
+            link += `name=` + filter["name"]  
 
+            let searchedName = filter["name"]
+            setSearchKeyWord(searchedName)
+            document.title = searchedName
+            url = BASE_URL_OF_API + 
+            `/search/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=${page}` 
+            + `&query=${searchedName}`
+        }
+        setLinkToPagination(link)
+
+        getMovies.changeUrl(url,{})
+        
     }, [location.search]);
 
 
@@ -85,6 +92,10 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
 
     }, [location.search]);
 
+    const restOfPagination = () => {
+
+    }
+
     return(
         <div>
             <div >
@@ -92,27 +103,12 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
                 { !getMovies.fetchDataStatus.loading ? (
                     <div>
                         { getMovies.fetchDataStatus.value !== undefined ? (
-                            <div className="movie-preview-container">
-                                {showTwelveMovies(getMovies.fetchDataStatus.value.results)}
-                                <div className="pagination flex-center">
-                                    <Pagination>
-                                        <Pagination.First />
-                                        <Pagination.Prev />
-                                        <Pagination.Item>{1}</Pagination.Item>
-                                        <Pagination.Ellipsis />
-
-                                        <Pagination.Item>{10}</Pagination.Item>
-                                        <Pagination.Item>{11}</Pagination.Item>
-                                        <Pagination.Item active>{12}</Pagination.Item>
-                                        <Pagination.Item>{13}</Pagination.Item>
-                                        <Pagination.Item disabled>{14}</Pagination.Item>
-
-                                        <Pagination.Ellipsis />
-                                        <Pagination.Item>{20}</Pagination.Item>
-                                        <Pagination.Next />
-                                        <Pagination.Last />
-                                    </Pagination>
+                            <div>
+                                <div className="movie-preview-container margin-btm-3">
+                                    {showTwelveMovies(getMovies.fetchDataStatus.value.results)}
+                                    
                                 </div>
+                                <PaginationComponent currentPage={getMovies.fetchDataStatus.value.page} link={linkToPagination} numberOfPages={getMovies.fetchDataStatus.value.total_pages}></PaginationComponent>
                             </div>
                         ):(
                             <MovieNotFound ></MovieNotFound>
