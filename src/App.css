@@ -154,6 +154,10 @@ body {
   text-align: right;
 }
 
+.flex-center{
+  display: flex;
+  justify-content: center;
+}
 
 .center-text{
   text-align: center;
@@ -365,11 +369,13 @@ a{
 
 .person-image-full{
   height: 25rem;
-  width: 20rem;
-  background-size: 100% auto;
+  width: 100%;
+  background-size: auto 100%;
   background-position: center;
   background-repeat: no-repeat;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .background-image{
@@ -381,6 +387,19 @@ a{
   position: relative; 
   width: 100%;
   background-size: 100% auto;
+  background-repeat: no-repeat;
+}
+
+.background-image-whole-page{
+  height: 80vh;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; 
+  width: 100%;
+  max-width: 1000px;
+  background-size: 100%;
   background-repeat: no-repeat;
 }
 
@@ -515,8 +534,8 @@ justify-content: flex-start;
 
 .person-info{
   grid-template-areas:
-  'poster  main-content main-content' 
-  'secondaryDescription personPerformance  personPerformance';
+  'poster  main-content main-content main-content' 
+  'secondaryDescription personPerformance  personPerformance personPerformance';
 }
 
 .full-movie{

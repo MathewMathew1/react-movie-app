@@ -7,7 +7,7 @@ const VAR = {
     LENGTH_OF_DESCRIPTION: 200
 }
 
-const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number}) => {
+const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number}): JSX.Element => {
 
 
     const partOfDescription = (): string => {

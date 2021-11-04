@@ -8,7 +8,7 @@ const SCORES = {
     MAXRED: [245, 26, 26],
 }
 
-const CircleProgressBar  = ({rating, number}: { rating: number, number?: number}) => {
+const CircleProgressBar  = ({rating, number}: { rating: number, number?: number}): JSX.Element => {
     
 
     const rotateProgressBar = (): void => {

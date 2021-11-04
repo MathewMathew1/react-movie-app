@@ -12,6 +12,7 @@ import { InputGroup, SplitButton, Dropdown, FormControl, Navbar, Container, Nav}
 import { useState } from 'react';
 import useFetch from './customHooks/useFetch';
 import { BASE_URL_OF_API } from './ApiVariables';
+import pageNotFound from "./components/NotFound/PageNotFound"
 
 
 const WAY_OF_SEARCHING = [
@@ -150,6 +151,7 @@ const App = (props: any) => {
                 <ActorInfo {...props} />
             )}
           />
+          <Route path="*" component={pageNotFound} />
         </Switch>
         
       </header>

@@ -16,7 +16,7 @@ const INFORMATION_TO_SHOW = [
     'company',
 ]
 
-const TvShow = ({tvShow}: { tvShow: tvShowType}) => {
+const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
     const [showedPanel, setShowedPanel] = useState(INFORMATION_TO_SHOW[0])
     
     const listOFGenres = (): string[] => {

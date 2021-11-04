@@ -4,7 +4,7 @@
 import { moviePreviewType } from "../../types/types";
 
 
-const Hero = ({movie}: { movie: moviePreviewType}) => {
+const Hero = ({movie}: { movie: moviePreviewType}): JSX.Element => {
     
     return (
         <div>

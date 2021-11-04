@@ -6,7 +6,7 @@ import RatingLabel from "../../mini-components/RatingLabel";
 import person from "../../person.png"
 import ActorList from "../Actors/ActorList"
 
-const Movie = ({movie}: { movie: movieFullType}) => {
+const Movie = ({movie}: { movie: movieFullType}): JSX.Element => {
 
     
     const listOFGenres = (): string[] => {

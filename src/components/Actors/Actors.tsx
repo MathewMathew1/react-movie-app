@@ -15,12 +15,12 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
 
     const getAge = (secondDate: Date, firstDate: Date, ) => {
         
-
-
-        var age = firstDate.getFullYear() - secondDate.getFullYear()
-        var monthDifference = firstDate.getMonth() - secondDate.getMonth()
-        let beforeBirthday = ((monthDifference < 0 || monthDifference === 0) && firstDate.getDate() < secondDate.getDate() )
-        if (beforeBirthday) {
+        let age: number = firstDate.getFullYear() - secondDate.getFullYear()
+        let monthDifference: number = firstDate.getMonth() - secondDate.getMonth()
+        
+        let beforeBirthdayInSecondDate: boolean = ((monthDifference < 0 || monthDifference === 0) 
+        && firstDate.getDate() < secondDate.getDate() )
+        if (beforeBirthdayInSecondDate) {
             age--
         }
         return age;
@@ -105,7 +105,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
                             <div className="box">
                                 {actor.castPerformance.map((value, index) => {
                                     return(
-                                            <MiniMoviePreview movie={value} number={index} ></MiniMoviePreview>
+                                            <MiniMoviePreview key={index} movie={value} number={index} ></MiniMoviePreview>
                                     )
                                 })}
                             </div>
@@ -117,7 +117,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
                             <div className="box">
                                 {actor.crewPerformance.map((value, index) => {
                                     return(
-                                            <MiniMoviePreview movie={value} number={index} ></MiniMoviePreview>
+                                            <MiniMoviePreview key={index} movie={value} number={index} ></MiniMoviePreview>
                                     )
                                 })}
                             </div>

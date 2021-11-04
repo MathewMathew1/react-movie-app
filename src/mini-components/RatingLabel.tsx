@@ -8,7 +8,7 @@ const SCORES = {
     MAXRED: [245, 26, 26],
 }
 
-const RatingLabel  = ({rating, number}: { rating: number, number?: number}) => {
+const RatingLabel  = ({rating, number}: { rating: number, number?: number}): JSX.Element => {
     console.log(rating)
 
     const colorProgressBar = (): void => {

@@ -5,7 +5,7 @@ import useFetch from "../../customHooks/useFetch"
 import queryString from "query-string"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"
-
+import MovieNotFound from "../NotFound/MovieNotFound"
 
 const MovieInfo = ({location}: { location: any}): JSX.Element => {
  
@@ -100,7 +100,7 @@ const MovieInfo = ({location}: { location: any}): JSX.Element => {
             { !getMovie.fetchDataStatus.loading && !getActors.fetchDataStatus.loading ? (
                 <div>
                     { getMovie.fetchDataStatus.value === undefined || getActors.fetchDataStatus.value === undefined ? (
-                        <div className="center informationBox">404 Unable to find movie</div>
+                        <MovieNotFound></MovieNotFound>
                     ):(
                         <Movie movie={FullMovieData(getMovie.fetchDataStatus.value, getActors.fetchDataStatus.value, getReviews.fetchDataStatus.value)}></Movie>
                     )}

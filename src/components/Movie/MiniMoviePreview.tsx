@@ -9,7 +9,7 @@ const VAR = {
     LENGTH_OF_DESCRIPTION: 200
 }
 
-const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePreviewType, number: number, isItTvShow?: boolean}) => {
+const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePreviewType, number: number, isItTvShow?: boolean}): JSX.Element => {
 
 
     const partOfDescription = (): string => {
