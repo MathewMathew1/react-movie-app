@@ -1,9 +1,12 @@
-import { moviePreviewType, useFetchSettingType } from "../../types/types"
-import MoviePreview from "../Movie/MoviePreview"
+import { useFetchSettingType } from "../../types/types"
 import Hero from "./Hero"
 import useFetch from "../../customHooks/useFetch"
 import LoadingCircle from "../../mini-components/LoadingCircle"
-import { BASE_URL_OF_API, BASE_URL_FOR_IMAGES } from "../../ApiVariables"
+import { BASE_URL_OF_API} from "../../ApiVariables"
+import { moviePreviewTypeFunction, showTwentyMovies } from "../../helper"
+import { useEffect } from "react"
+
+
 
 const USE_FETCH_SETTINGS: useFetchSettingType[] = [
     
@@ -83,69 +86,12 @@ const HomePage = (): JSX.Element => {
     const getTvShows = useFetch(USE_FETCH_SETTINGS[5].url, USE_FETCH_SETTINGS[5].options, 
         USE_FETCH_SETTINGS[5].dependencies, USE_FETCH_SETTINGS[5].saveToSession, USE_FETCH_SETTINGS[5].sessionStorageName)
         
-    console.log(getTvShows)    
-    
-    const moviePreviewType = ( {movie, originalImageSize = false}: {movie: any, originalImageSize?: boolean}): moviePreviewType => {
-
-        const moviePreview: moviePreviewType  = {
-            id: movie.id,
-            releaseDate: movie.release_date,
-            fullTitle: movie.title,
-            rating: movie.vote_average,
-            overview: movie.overview,
-            image: originalImageSize? BASE_URL_FOR_IMAGES() + movie.poster_path: BASE_URL_FOR_IMAGES("w342") + movie.poster_path,
-            ratingCount: movie.vote_count,
-        }
-        return moviePreview
-    }
-
-    const moviePreviewTypeWithTvShow = ( {tvShow, originalImageSize = false}: {tvShow: any, originalImageSize?: boolean}): moviePreviewType => {
-
-        const moviePreview: moviePreviewType  = {
-            id: tvShow.id,
-            releaseDate: tvShow.first_air_date,
-            fullTitle: tvShow.name,
-            rating: tvShow.vote_average,
-            overview: tvShow.overview,
-            image: originalImageSize? BASE_URL_FOR_IMAGES() + tvShow.poster_path: BASE_URL_FOR_IMAGES("w342") + tvShow.poster_path,
-            ratingCount: tvShow.vote_count,
-            media_type: "tv"
-        }
-        return moviePreview
-    }
-
-    const showTwelveMovies = (movies: any, number: number): JSX.Element[] => {
-       
-        let n = Math.min(20, movies.length)
-        var elements = [];
-        
-        for(let i=0; i < n; i++){
-            let numberToPass: number = parseInt((i.toString() + number.toString()))
-            elements.push(<MoviePreview key={i} number={numberToPass} movie={moviePreviewType({movie: movies[i]})}></MoviePreview>);
-        }
-        return elements;
-    }
-
-
-    const showTwelveTvShows = (tvShows: any, number: number): JSX.Element[] => {
-        
-        let n = Math.min(20, tvShows.length)
-        var elements = [];
-        
-        for(let i=0; i < n; i++){
-            let numberToPass: number = parseInt((i.toString() + number.toString()))
-            elements.push(<MoviePreview key={i} movie={moviePreviewTypeWithTvShow({tvShow: tvShows[i]})} 
-            number={numberToPass}></MoviePreview>);
-        }
-        return elements;
-    }
-    
 
     const changeSelected = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, number: number):void => {
         let element = e.target as HTMLTextAreaElement
 
         let whichMovieToChange
-        console.log(number)
+
         let selectedCategory
         if(number<2){
             selectedCategory = document.getElementById("selected category trending")
@@ -163,7 +109,6 @@ const HomePage = (): JSX.Element => {
 
         if(selectedCategory){
             element.append(selectedCategory)
-            console.log(element)
         }
         
         whichMovieToChange.changeUrl(USE_FETCH_SETTINGS[number].url, USE_FETCH_SETTINGS[number].options, 
@@ -171,6 +116,9 @@ const HomePage = (): JSX.Element => {
              
     }
 
+    useEffect(() => {
+        document.title = "Home Page"
+    }, []);
 
     return(
         <div>
@@ -179,7 +127,7 @@ const HomePage = (): JSX.Element => {
                     { !getTrendingMovies.fetchDataStatus.loading ? (
                         <span >
                             { getTrendingMovies.fetchDataStatus.value !== undefined ? (
-                                <Hero movie={moviePreviewType({
+                                <Hero movie={moviePreviewTypeFunction({
                                     movie: getTrendingMovies.fetchDataStatus.value.results[0],
                                     originalImageSize: true})}
                                 ></Hero>
@@ -216,7 +164,7 @@ const HomePage = (): JSX.Element => {
                             <span >
                                 { getTrendingMovies.fetchDataStatus.value !== undefined ? (    
                                     <div className="box">
-                                        {showTwelveMovies(getTrendingMovies.fetchDataStatus.value.results, 10)}
+                                        {showTwentyMovies(getTrendingMovies.fetchDataStatus.value.results, 10)}
                                     </div>
                                 ):(
                                     <div className="error-message" >Something went wrong, try again</div>
@@ -254,7 +202,7 @@ const HomePage = (): JSX.Element => {
                         <span >
                             { getPopularMovies.fetchDataStatus.value !== undefined ? (    
                                 <div className="box">
-                                    {showTwelveMovies(getPopularMovies.fetchDataStatus.value.results, 11)}
+                                    {showTwentyMovies(getPopularMovies.fetchDataStatus.value.results, 11)}
                                 </div>
                             ):(
                                 <div className="error-message" >Something went wrong, try again</div>
@@ -291,7 +239,7 @@ const HomePage = (): JSX.Element => {
                         <span >
                             { getTvShows.fetchDataStatus.value !== undefined ? (    
                                 <div className="box">
-                                    {showTwelveTvShows(getTvShows.fetchDataStatus.value.results, 12)}
+                                    {showTwentyMovies(getTvShows.fetchDataStatus.value.results, 12, "tv")}
                                 </div>
                             ):(
                                 <div className="error-message" >Something went wrong, try again</div>

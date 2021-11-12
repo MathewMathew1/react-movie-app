@@ -1,45 +1,20 @@
 
 
-import { moviePreviewType } from "../../types/types"
-import MoviePreview from "./MoviePreview"
 import useFetch from "../../customHooks/useFetch"
 import queryString from "query-string"
-import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
+import {BASE_URL_OF_API} from "../../ApiVariables"
 import { useState, useEffect } from "react"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import PaginationComponent from "../../mini-components/Pagination"
 import MovieNotFound  from "../NotFound/MovieNotFound"
-
+import { showTwentyMovies } from "../../helper"
 
 const MovieSearch = ({location}: {location: any}): JSX.Element => {
     const [searchKeyWord, setSearchKeyWord] = useState('')
-    const [totalResults, setTotalResults] = useState(0)
     const [linkToPagination, setLinkToPagination] = useState('')
     const getMovies = useFetch('',{},[]) 
     
     console.log(getMovies)
-
-    const showTwelveMovies = (movies: any): JSX.Element[] => {
-        let n = Math.min(20, movies.length)
-        let elements: any[] = [];
-        for(let i=0; i < n; i++){
-            elements.push(<MoviePreview key={i} movie={moviePreviewType(getMovies.fetchDataStatus.value.results[i])} number={i}></MoviePreview>);
-        }
-        return elements;
-    }
-    
-        const moviePreviewType = (movie: any): moviePreviewType => {
-        const moviePreview: moviePreviewType  = {
-            id: movie.id,
-            releaseDate: movie.release_date,
-            fullTitle: movie.title,
-            rating: movie.vote_average,
-            overview: movie.overview,
-            image: BASE_URL_FOR_IMAGES() + movie.poster_path,
-            ratingCount: movie.vote_count,
-        }
-        return moviePreview
-    }
 
     useEffect(() => {
         
@@ -92,9 +67,6 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
 
     }, [location.search]);
 
-    const restOfPagination = () => {
-
-    }
 
     return(
         <div>
@@ -102,10 +74,10 @@ const MovieSearch = ({location}: {location: any}): JSX.Element => {
                 <div className="center-text"> <h3 style={{color: "white"}}>Results for {searchKeyWord} search </h3> </div>
                 { !getMovies.fetchDataStatus.loading ? (
                     <div>
-                        { getMovies.fetchDataStatus.value !== undefined ? (
+                        { getMovies.fetchDataStatus.value !== undefined || getMovies.fetchDataStatus.value?.total_results === 0 ? (
                             <div>
                                 <div className="movie-preview-container margin-btm-3">
-                                    {showTwelveMovies(getMovies.fetchDataStatus.value.results)}
+                                    {showTwentyMovies(getMovies.fetchDataStatus.value.results, 10)}
                                     
                                 </div>
                                 <PaginationComponent currentPage={getMovies.fetchDataStatus.value.page} link={linkToPagination} numberOfPages={getMovies.fetchDataStatus.value.total_pages}></PaginationComponent>

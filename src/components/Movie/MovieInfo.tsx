@@ -1,7 +1,6 @@
 import { movieFullType, actorType, movieReview, userReviewInfo } from "../../types/types"
 import Movie from "./Movie"
 import useFetch from "../../customHooks/useFetch"
-
 import queryString from "query-string"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"

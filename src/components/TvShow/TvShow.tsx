@@ -1,14 +1,13 @@
 
 import { tvShowType } from "../../types/types";
 import CircleProgressBar from "../../mini-components/CircleProgressBar"
-import { ListGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import RatingLabel from "../../mini-components/RatingLabel";
-import person from "../../person.png"
-import EpisodePreview from "../EpisodePreview";
+import EpisodePreview from "./EpisodePreview";
 import {BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import { Table } from "react-bootstrap";
 import ActorList from "../Actors/ActorList";
+import ReviewList from "../Reviews/ReviewList";
+import RatingMovie from "../../mini-components/RatingMovie";
 
 const INFORMATION_TO_SHOW = [
     'Info',
@@ -26,21 +25,9 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
 
     }
 
-    const imagePath = (UrlString: string): string => {
-        if(UrlString===''){
-            return `url(${person})`
-        }
-        return `url(${UrlString})`
-    }
-
     useEffect(() => {
         document.title = tvShow.name
     }, [tvShow.name]);
-
-    const date = (date: string): string =>{
-        let dateOfCreation = new Date(date)
-        return dateOfCreation.getDate() + "/" + (dateOfCreation.getMonth()+1)+ "/" + dateOfCreation.getFullYear()
-    }
 
     const isShowInProduction = (): string => {
         if(tvShow.inProduction){
@@ -64,7 +51,9 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
     return (
         <div className="full-movie bigger">
             
-            <div className="background-image" style={{backgroundImage: `url(${tvShow.image})`}}></div>
+            <div className="background-image" style={{backgroundImage: `url(${tvShow.image})`}}>
+                <RatingMovie id={tvShow.id} mediaType={"tv"}></RatingMovie>
+            </div>
          
             <ActorList actorList={tvShow.actorList}></ActorList>
             <div className="container">
@@ -137,41 +126,7 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
                     </Table>
                 )}
             </div>
-            <div className="review-list">
-                <h3>Reviews:</h3>
-                { tvShow.reviews.length > 0 ? (
-                    <div className="scrollable">
-                
-                        <ListGroup className="" as="ol" numbered>
-                            
-                            {tvShow.reviews.map((value, index) => {
-                                return(
-                                    <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
-                                        <div className="ms-2 me-auto text-break inline-block">
-                                            <div className="fw-bold  ">
-                                                <div className="container">
-                                                    <div className="icon profile" style={{backgroundImage: imagePath(value.authorDetails.avatar_image)}}></div>
-                                                    {value.author}
-                                                    <span className="date"> {date(value.createdDate)} </span>
-                                                </div>    
-                                                { value.authorDetails.rating!==null ? (
-                                                    <RatingLabel rating={value.authorDetails.rating} number={index}></RatingLabel>
-                                                ):null}
-                                                
-                                            </div>
-                                                {value.content}
-                                        </div>
-
-                                    </ListGroup.Item>                               
-                                )
-                            })}    
-                        </ListGroup>
-                    
-                    </div>
-                ):(
-                    <div>No reviews so far</div>
-                )}    
-            </div>    
+            <ReviewList reviews={tvShow.reviews}></ReviewList>
         </div>  
     )      
 }

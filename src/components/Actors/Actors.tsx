@@ -13,13 +13,13 @@ const INFORMATION_TO_SHOW = [
 const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
     const [MoviesAs, setMoviesAs] = useState(INFORMATION_TO_SHOW[0])
 
-    const getAge = (secondDate: Date, firstDate: Date, ) => {
+    const getAge = (secondDate: Date, firstDate: Date): number => {
         
         let age: number = firstDate.getFullYear() - secondDate.getFullYear()
         let monthDifference: number = firstDate.getMonth() - secondDate.getMonth()
         
-        let beforeBirthdayInSecondDate: boolean = ((monthDifference < 0 || monthDifference === 0) 
-        && firstDate.getDate() < secondDate.getDate() )
+        let beforeBirthdayInSecondDate: boolean = (monthDifference < 0  || (monthDifference === 0
+        && firstDate.getDate() < secondDate.getDate()) )
         if (beforeBirthdayInSecondDate) {
             age--
         }

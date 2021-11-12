@@ -1,10 +1,10 @@
 
-
 import PageNotFound from "./pageNotFound.png"
+
 
 const MovieNotFound = () => {
     
-   
+
 
     return (
         <div className="flex-center">

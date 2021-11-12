@@ -11,6 +11,13 @@ export type moviePreviewType = {
     media_type?: string;
   }
 
+export type UserInfo = {
+  id: number;
+  name: string;
+  username: string;
+  avatar: object;
+}  
+
 export type tvShowPreviewType = {
   id: number;
   firstAirDate: string;

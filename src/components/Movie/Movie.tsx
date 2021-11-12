@@ -1,10 +1,9 @@
 import { movieFullType } from "../../types/types";
 import CircleProgressBar from "../../mini-components/CircleProgressBar"
-import { ListGroup } from "react-bootstrap";
 import { useEffect } from "react";
-import RatingLabel from "../../mini-components/RatingLabel";
-import person from "../../person.png"
+import ReviewList from "../Reviews/ReviewList";
 import ActorList from "../Actors/ActorList"
+import RatingMovie from "../../mini-components/RatingMovie";
 
 const Movie = ({movie}: { movie: movieFullType}): JSX.Element => {
 
@@ -16,26 +15,20 @@ const Movie = ({movie}: { movie: movieFullType}): JSX.Element => {
 
     }
 
-    const imagePath = (UrlString: string): string => {
-        if(UrlString===''){
-            return `url(${person})`
-        }
-        return `url(${UrlString})`
-    }
+ 
 
     useEffect(() => {
         document.title = movie.fullTitle
     }, [movie.fullTitle]);
 
-    const date = (date: string): string =>{
-        let dateOfCreation = new Date(date)
-        return dateOfCreation.getDate() + "/" + (dateOfCreation.getMonth()+1)+ "/" + dateOfCreation.getFullYear()
-    }
+
 
     return (
         <div className="full-movie">
             
-            <div className="background-image" style={{backgroundImage: `url(${movie.image})`}}></div>
+            <div className="background-image" style={{backgroundImage: `url(${movie.image})`}}>
+                <RatingMovie id={movie.id} mediaType={"movie"}></RatingMovie>
+            </div>
             <ActorList actorList={movie.actorList}></ActorList>
             <div className="container">
                 <h3 style={{marginRight: "1rem"}}>{movie.fullTitle}</h3>
@@ -59,39 +52,7 @@ const Movie = ({movie}: { movie: movieFullType}): JSX.Element => {
                     <div >Release Date: {movie.releaseDate}</div>
                 </div>
             </div>
-            <div className="review-list">
-                <h3>Reviews:</h3>
-                { movie.reviews.length > 0 ? (
-                    <div className="scrollable">
-                        <ListGroup className="" as="ol" numbered>
-                            
-                            {movie.reviews.map((value, index) => {
-                                return(
-                                    <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
-                                        <div className="ms-2 me-auto text-break inline-block">
-                                            <div className="fw-bold  ">
-                                                <div className="container">
-                                                    <div className="icon profile" style={{backgroundImage: imagePath(value.authorDetails.avatar_image)}}></div>
-                                                    {value.author}
-                                                    <span className="date"> {date(value.createdDate)} </span>
-                                                </div>    
-                                                { value.authorDetails.rating!==null ? (
-                                                    <RatingLabel rating={value.authorDetails.rating} number={index}></RatingLabel>
-                                                ):null}
-                                                
-                                            </div>
-                                                {value.content}
-                                        </div>
-
-                                    </ListGroup.Item>                               
-                                )
-                            })}    
-                        </ListGroup>
-                    </div> 
-                ):(
-                    <div>No reviews so far</div>
-                )}   
-            </div>    
+            <ReviewList reviews={movie.reviews}></ReviewList>
         </div>  
     )      
 }

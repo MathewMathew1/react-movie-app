@@ -2,6 +2,7 @@
 import { Card, Button } from "react-bootstrap"
 import { moviePreviewType } from "../../types/types";
 import CircleProgressBar from "../../mini-components/CircleProgressBar"
+import RatingMovie from "../../mini-components/RatingMovie";
 
 const VAR = {
     LENGTH_OF_DESCRIPTION: 200
@@ -27,7 +28,7 @@ const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number
                 <Card.Img className="rescaled-image" loading="lazy"  
                 alt={movie.fullTitle} variant="top" width="100%" height="300px"  
                 src={movie.image}  />
-                
+                <RatingMovie id={movie.id} mediaType={movie.media_type}></RatingMovie>
                 <div className="container">
                     <Card.Title className="margin-right">{movie.fullTitle}</Card.Title>
                     <CircleProgressBar rating={movie.rating} number={number}></CircleProgressBar>
@@ -41,7 +42,9 @@ const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number
                 </Card.Body>
                 <div className="bottom-right">
                     <Button as="a" href={urlForMorInfo()} variant="primary">More info</Button>
+                    <i style={{height: "1rem", width: "2rem" }} className="far fa-star"></i>
                 </div>
+                <i className="fas fa-camera"></i> 
             </Card>
         </div>  
     )      

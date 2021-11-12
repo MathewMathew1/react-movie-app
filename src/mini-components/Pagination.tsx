@@ -1,6 +1,6 @@
 
 
-import { useEffect } from "react"
+
 import { Pagination } from "react-bootstrap"
 
 
@@ -60,7 +60,7 @@ const PaginationComponent  = ({link, numberOfPages, currentPage}: {link: string,
                     className = "hide-on-small-screens"
                 }
 
-                elements.push(<Pagination.Item className={className} key={i} active={currentPage===i} href={link+`&page=${i}`}>{i}</Pagination.Item>);
+                elements.push(<Pagination.Item key={i} className={className} active={currentPage===i} href={link+`&page=${i}`}>{i}</Pagination.Item>);
                 
             }
             elements.push(<Pagination.Ellipsis className="show-on-small-screens" />)
@@ -83,7 +83,7 @@ const PaginationComponent  = ({link, numberOfPages, currentPage}: {link: string,
 
                     {restOfPagination()}
 
-                <Pagination.Item active={currentPage===numberOfPages}  href={link+`&page=${numberOfPages}`}>{numberOfPages}</Pagination.Item>
+                <Pagination.Item hidden={numberOfPages===1} active={currentPage===numberOfPages}  href={link+`&page=${numberOfPages}`}>{numberOfPages}</Pagination.Item>
                 <Pagination.Next disabled={currentPage===numberOfPages} href={link+`&page=${currentPage-1}`} />
                 <Pagination.Last disabled={currentPage===numberOfPages} href={link+`&page=${20}`} />
             </Pagination>
