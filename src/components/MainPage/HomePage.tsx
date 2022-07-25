@@ -3,7 +3,8 @@ import Hero from "./Hero"
 import useFetch from "../../customHooks/useFetch"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import { BASE_URL_OF_API} from "../../ApiVariables"
-import { moviePreviewTypeFunction, showTwentyMovies } from "../../helper"
+import { moviePreviewTypeFunction } from "../../helper"
+import ShowTwentyMovies from "../../mini-components/ShowTwentyMovies"
 import { useEffect } from "react"
 
 
@@ -159,7 +160,7 @@ const HomePage = (): JSX.Element => {
                             <span >
                                 { getTrendingMovies.fetchDataStatus.value !== undefined ? (    
                                     <div className="box">
-                                        {showTwentyMovies(getTrendingMovies.fetchDataStatus.value.results, 10)}
+                                        <ShowTwentyMovies movies={getTrendingMovies.fetchDataStatus.value.results} number={10}/>                                       
                                     </div>
                                 ):(
                                     <div className="error-message" >Something went wrong, try again</div>
@@ -197,7 +198,7 @@ const HomePage = (): JSX.Element => {
                         <span >
                             { getPopularMovies.fetchDataStatus.value !== undefined ? (    
                                 <div className="box">
-                                    {showTwentyMovies(getPopularMovies.fetchDataStatus.value.results, 11)}
+                                    <ShowTwentyMovies movies={getPopularMovies.fetchDataStatus.value.results} number={11}/>
                                 </div>
                             ):(
                                 <div className="error-message" >Something went wrong, try again</div>
@@ -234,7 +235,7 @@ const HomePage = (): JSX.Element => {
                         <span >
                             { getTvShows.fetchDataStatus.value !== undefined ? (    
                                 <div className="box">
-                                    {showTwentyMovies(getTvShows.fetchDataStatus.value.results, 12, "tv")}
+                                    <ShowTwentyMovies movies={getTvShows.fetchDataStatus.value.results} number={12} mediaType={"tv"}/>
                                 </div>
                             ):(
                                 <div className="error-message" >Something went wrong, try again</div>

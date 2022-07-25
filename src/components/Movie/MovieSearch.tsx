@@ -1,12 +1,10 @@
-
-
 import useFetch from "../../customHooks/useFetch"
 import {BASE_URL_OF_API} from "../../ApiVariables"
 import { useState, useEffect } from "react"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import PaginationComponent from "../../mini-components/Pagination"
 import MovieNotFound  from "../NotFound/MovieNotFound"
-import { showTwentyMovies } from "../../helper"
+import ShowTwentyMovies from "../../mini-components/ShowTwentyMovies"
 import { useSearchParams } from "react-router-dom"
 
 const MovieSearch = (): JSX.Element => {
@@ -15,7 +13,6 @@ const MovieSearch = (): JSX.Element => {
     const getMovies = useFetch('',{},[]) 
     const [searchParams] = useSearchParams()
     
-    console.log(getMovies)
 
     useEffect(() => {
         let url: string =''
@@ -69,7 +66,6 @@ const MovieSearch = (): JSX.Element => {
         }
 
     }, [searchParams]);
-    console.log(getMovies.fetchDataStatus.value?.total_results)
 
     return(
         <div>
@@ -80,7 +76,7 @@ const MovieSearch = (): JSX.Element => {
                         { getMovies.fetchDataStatus.value !== undefined && getMovies.fetchDataStatus.value?.total_results !== 0 ? (
                             <div>
                                 <div className="movie-preview-container margin-btm-3">
-                                    {showTwentyMovies(getMovies.fetchDataStatus.value.results, 10)}                                   
+                                    <ShowTwentyMovies movies={getMovies.fetchDataStatus.value.results} number={10}/>
                                 </div>
                                 <PaginationComponent currentPage={getMovies.fetchDataStatus.value.page} link={linkToPagination} numberOfPages={getMovies.fetchDataStatus.value.total_pages}></PaginationComponent>
                             </div>

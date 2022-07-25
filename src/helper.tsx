@@ -1,7 +1,5 @@
 import { moviePreviewType } from "./types/types"
 import { BASE_URL_FOR_IMAGES } from "./ApiVariables"
-import MoviePreview from "./components/Movie/MoviePreview"
-
 
 const moviePreviewTypeFunction = ( {movie, originalImageSize = false, mediaType = "movie"}: {movie: any, originalImageSize?: boolean, 
     mediaType?: string}): moviePreviewType => {
@@ -20,19 +18,4 @@ const moviePreviewTypeFunction = ( {movie, originalImageSize = false, mediaType 
     return moviePreview
 }
 
-const showTwentyMovies = (movies: any, number: number, mediaType?: string): JSX.Element[] => {
-       
-    let n = Math.min(20, movies.length)
-    var elements = [];
-    moviePreviewTypeFunction({movie: movies[0], mediaType: mediaType })
-    for(let i=0; i < n; i++){
-        let numberToPass: number = parseInt((i.toString() + number.toString()))
-        elements.push(<MoviePreview key={i} number={numberToPass} movie={moviePreviewTypeFunction({movie: movies[i], mediaType: mediaType })}></MoviePreview>);
-    }
-    
-    return elements;
-}
-
-
-
-export {moviePreviewTypeFunction, showTwentyMovies}
+export {moviePreviewTypeFunction}
