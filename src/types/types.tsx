@@ -1,5 +1,3 @@
-import useFetch from "../customHooks/useFetch"
-
 export type moviePreviewType = {
     id: number;
     releaseDate: string;
@@ -10,6 +8,20 @@ export type moviePreviewType = {
     ratingCount: number;
     media_type?: string;
   }
+
+export type UserInfo = {
+  id: number;
+  name: string;
+  username: string;
+  avatar: {
+    gravatar: {
+      hash: string
+    }
+    tmdb: {
+      avatar_path: null
+    }
+  };
+}  
 
 export type tvShowPreviewType = {
   id: number;
@@ -38,6 +50,11 @@ export type actorInfoType = {
   name: string;
   placeOfBirth: string;
   image: string;
+  castPerformance: moviePreviewType[];
+  crewPerformance: moviePreviewType[];
+}
+
+export type actorPerformance = {
   castPerformance: moviePreviewType[];
   crewPerformance: moviePreviewType[]; 
 }
@@ -113,4 +130,10 @@ export type tvShowType = tvShowPreviewType & {
   networks: productionCompanies[];
   homepage: string;
   originalLanguage: string;
+}
+
+export enum severityColors {
+  error = "rgb(240, 56, 19)",
+  warning = "rgb(247, 247, 10)",
+  success = "rgb(18, 230, 113)",
 }
