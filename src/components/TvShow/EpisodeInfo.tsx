@@ -8,13 +8,6 @@ import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import { useParams } from "react-router-dom"
 
-
-
-
-
-
-    
-
 const EpisodeInfo = (): JSX.Element => {
     let id = useParams().id
     const getTvEpisode = useFetch( BASE_URL_OF_API + `/tv/${id}?api_key=054d81c0a2132b241e5db5c64009ef65`,{},[]) 

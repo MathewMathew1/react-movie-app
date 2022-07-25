@@ -5,9 +5,15 @@ import { list, star, watchList, numberI } from "../icons/icons"
 import { Dropdown } from "react-bootstrap"
 import { BASE_URL_OF_API } from "../ApiVariables"
 import { useUser } from "../UserContext"
+<<<<<<< HEAD
 import { useUpdateSnackbar } from "../SnackBarContext"
 
  
+=======
+import ToastComponent from "./ToastComponent"
+
+const controller = new AbortController() 
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
 
 
 const TOAST_MESSAGES = {
@@ -16,15 +22,24 @@ const TOAST_MESSAGES = {
     "fail": {text: "Unable to perform action."},
     "Added to watchlist": {text: "Successfully added movie to watchlist."},
     "Removed from watchlist": {text: "Successfully removed movie from watchlist."},
+<<<<<<< HEAD
     "rated": {text: "Successfully rated movie"},
     "failed to rate": {text: "Failed to rate a movie"}
 }
 
 const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Element => {
+=======
+    "rated": {text: "Successfully rated movie"}
+}
+
+const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Element => {
+
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
     const [isItFavoriteMovie, setIsItFavoriteMovie] = useState(false)
     const [isMovieOnWatchList, setIsMovieOnWatchList] = useState(false)
     const [userDataOnMovieFetched, setUserDataOnMovieFetched] = useState(false)
     const [showDropDown, setShowDropDown] = useState(false)
+<<<<<<< HEAD
     const [showRating, setShowRating] = useState(false)
     const [userRating, setUserRating] = useState(0)
     const [userRatingOnHover, setUserRatingOnHover] = useState(0)
@@ -32,6 +47,17 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
     const updateSnackBar = useUpdateSnackbar()
 
     const controller = new AbortController()
+=======
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState(TOAST_MESSAGES["Made favorite"].text)
+    const [showRating, setShowRating] = useState(false)
+    const [wasThisFilmRated, setWasThisFilmRated] = useState(false)
+    const [userRating, setUserRating] = useState(0)
+    const [userRatingOnHover, setUserRatingOnHover] = useState(0)
+    const user = useUser()
+
+
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
 
     const makeMovieFavorite = () => {
 
@@ -51,6 +77,7 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
         .then(response => response.json())
         .then(response => {
             if(response.success === false){
+<<<<<<< HEAD
                 updateSnackBar.addSnackBar({snackbarText: TOAST_MESSAGES["fail"].text, severity: "error"})
             }
             else{
@@ -58,6 +85,21 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
                 else updateSnackBar.addSnackBar({snackbarText: TOAST_MESSAGES["Made favorite"].text, severity: "success"})
                 setIsItFavoriteMovie(!isItFavoriteMovie)
             }
+=======
+                setToastMessage(TOAST_MESSAGES["fail"].text)
+            }
+            else{
+                if(isItFavoriteMovie){
+                    setToastMessage(TOAST_MESSAGES["Made unfavorite"].text)
+                    
+                }
+                else{
+                    setToastMessage(TOAST_MESSAGES["Made favorite"].text)
+                }
+                setIsItFavoriteMovie(!isItFavoriteMovie)
+            }
+            setShowToast(true)
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
         })
         .catch(error=>{console.log(error)})
     

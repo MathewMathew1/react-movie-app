@@ -1,9 +1,7 @@
 
 import pageNotFound from "./pageNotFound.png"
 
-
 const PageNotFound = () => {
-
 
     return (
         <div className="flex-center">

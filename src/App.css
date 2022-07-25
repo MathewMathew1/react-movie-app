@@ -584,7 +584,6 @@ justify-content: flex-start;
 }
 
 
-
 .secondary-info > *:not(.header){
   flex-grow: 0;
   width: 100%;

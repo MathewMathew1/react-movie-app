@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react"
+<<<<<<< HEAD
 import { Container, FormControl, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { BASE_URL_FOR_IMAGES, BASE_URL_OF_API } from "../../ApiVariables"
+=======
+import { Container, FormControl, Nav, Navbar, Toast, NavDropdown } from "react-bootstrap"
+import { BASE_URL_OF_API } from "../../ApiVariables"
+
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
 import useFetch from "../../customHooks/useFetch"
 import { useUserUpdate } from "../../UserContext"
 import { camera } from "../../icons/icons"
 import { useUser } from "../../UserContext"
+<<<<<<< HEAD
 import { useUpdateSnackbar } from "../../SnackBarContext"
 
 
 const DEFAULT_GRAVATAR = '0f516da7f18d3820b0b2e67919867698'
+=======
+
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
 
 const WAY_OF_SEARCHING = [
     "Search by name",
@@ -19,21 +29,37 @@ const controller = new AbortController()
 
 
 const NavbarComponent  = (): JSX.Element => {
+<<<<<<< HEAD
+=======
+
+    const [showToast, setShowToast] = useState(false)
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
     const [wayOfSearching, setWayOfSearching] = useState(WAY_OF_SEARCHING[0])
     const [phraseToSearch, setPhraseToSearch] = useState("")
     const getGenres = useFetch( BASE_URL_OF_API + `/genre/movie/list?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US`,{},[], true, 'genres') 
     const user = useUser()
     const userUpdate = useUserUpdate()
+<<<<<<< HEAD
     const updateToast = useUpdateSnackbar()
+=======
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
 
     const searchForMovies = (e: React.KeyboardEvent<object>): void => {
         e.preventDefault()
         let param: string = ''
         if(wayOfSearching===WAY_OF_SEARCHING[0]){
+<<<<<<< HEAD
             param = `?name=${phraseToSearch}`
         }
         
         else if(wayOfSearching===WAY_OF_SEARCHING[1]){
+=======
+        param = `?name=${phraseToSearch}`
+        }
+        
+        else if(wayOfSearching===WAY_OF_SEARCHING[1]){
+        console.log(getGenres)
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
         
         let genre: string|undefined
         let id: number|undefined
@@ -42,6 +68,10 @@ const NavbarComponent  = (): JSX.Element => {
             if(getGenres.fetchDataStatus.value.genres[i].name.toLowerCase().includes(phraseToSearch)){
             genre = getGenres.fetchDataStatus.value.genres[i].name
             id = getGenres.fetchDataStatus.value.genres[i].id
+<<<<<<< HEAD
+=======
+            console.log(getGenres.fetchDataStatus.value.genres[i])
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
             }
         }
         if(genre === undefined){
@@ -54,6 +84,10 @@ const NavbarComponent  = (): JSX.Element => {
 
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
     useEffect(() => {
      
         userUpdate.fetchAllData()
@@ -61,7 +95,10 @@ const NavbarComponent  = (): JSX.Element => {
         return () => {
           controller.abort()
         }
+<<<<<<< HEAD
         // eslint-disable-next-line react-hooks/exhaustive-deps
+=======
+>>>>>>> ec0cf06993b33b0cec26f1bbb7b2ccfd454fcd78
     }, []);
 
     const Login = async () => {
