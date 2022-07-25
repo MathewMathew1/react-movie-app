@@ -7,9 +7,6 @@ import { BASE_URL_OF_API } from "../ApiVariables"
 import { useUser } from "../UserContext"
 import { useUpdateSnackbar } from "../SnackBarContext"
 
- 
-
-
 const TOAST_MESSAGES = {
     "Made favorite": {text: "Successfully added movie to favorite."},
     "Made unfavorite": {text: "Successfully removed movie from favorite."},
@@ -76,10 +73,7 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
         })
         .then(response => response.json())
         .then(response => {
-            if(response.rated === false) updateSnackBar.addSnackBar({snackbarText: TOAST_MESSAGES["Made unfavorite"].text, severity: "success"})
-            else{
-                setUserRating(response.rated.value)
-            }
+            if(response.rated !== false) setUserRating(response.rated.value)
             setIsItFavoriteMovie(response.favorite)
             setIsMovieOnWatchList(response.watchlist)
         })
@@ -145,14 +139,6 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
         .catch(error=>{console.log(error)})
     }
 
-    const starForRating = (index: number): JSX.Element => {
-        let colorStar: boolean =  index + 1 <= userRatingOnHover? true: false
-
-        return(
-            <span onMouseLeave={() => setUserRatingOnHover(userRating)} onMouseOver={() => setUserRatingOnHover(index+1)} onClick={() => rateMovie(index+1)}>{star(colorStar)}</span>
-        )
-    }
-
     useEffect(() => {
         return () => {
           controller.abort()
@@ -168,7 +154,6 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
                         <div onClick={() => {setShowDropDown(!showDropDown)
                             fetchUserDataOnMovie(); setShowRating(false)}} className="circle-list">
                             {list()}
-                            
                         </div>
                         {showDropDown ?(
                             <div className="dropdown-in-preview" >
@@ -188,8 +173,12 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
                             <div style={{backgroundColor: "white"}} >
                                 <Dropdown.Item>
                                     {Array.from(Array(10), (e, i) => {
+                                        let colorStar: boolean =  i + 1 <= userRatingOnHover? true: false
                                         return(
-                                            <span key={i}>{starForRating(i)}</span>
+                                            <span onMouseLeave={() => setUserRatingOnHover(userRating)} 
+                                                onMouseOver={() => setUserRatingOnHover(i+1)} onClick={() => rateMovie(i+1)}>
+                                                {star(colorStar)}
+                                            </span>
                                         )
                                     })}
                                 </Dropdown.Item>
