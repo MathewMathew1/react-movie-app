@@ -227,13 +227,11 @@ body {
   justify-content: center;
 }
 
-.footer {
-  position: fixed;
-  display: flex;
+.pagination {
+
   justify-content: center;
   bottom: 0;
-
-
+  margin-bottom: 4rem;
   color: white;
   text-align: center;
   position: fixed;
