@@ -9,7 +9,6 @@ const SCORES = {
 }
 
 const RatingLabel  = ({rating, number}: { rating: number, number?: number}): JSX.Element => {
-    console.log(rating)
 
     const colorProgressBar = (): void => {
         const ratingNumber = rating
