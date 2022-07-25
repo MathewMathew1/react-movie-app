@@ -10,7 +10,6 @@ const SnackBars = (): JSX.Element => {
     const snackBarUpdate = useUpdateSnackbar()
 
     const removeSnackBar = (index: number) => {
-        console.log("index")
         snackBarUpdate.removeSnackBarByIndex(index)
     }
 
@@ -19,7 +18,7 @@ const SnackBars = (): JSX.Element => {
             <ToastContainer style={{zIndex: "16", paddingBottom: "5rem"}}  position="bottom-end" containerPosition="fixed" >
                 {snackBars.snackBarsInfos.map((snackbar: SnackbarInfo, index: number)=> (
                     <Toast key={`Toast ${index}`} style={{backgroundColor: snackbar.severity, position: "sticky", zIndex: "15"}}  
-                        onClose={() => removeSnackBar(index)} delay={50000} autohide >
+                        onClose={() => removeSnackBar(index)} delay={5000} autohide >
                         <Toast.Header>{snackbar.message}</Toast.Header>
                         
                     </Toast>
