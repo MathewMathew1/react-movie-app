@@ -1,8 +1,7 @@
 
-import { actorInfoType } from "../../types/types"
+import { actorInfoType} from "../../types/types"
 import MiniMoviePreview from "../Movie/MiniMoviePreview"
-import { useState } from "react"
-
+import { useEffect, useState } from "react"
 
 const INFORMATION_TO_SHOW = [
     'Cast',
@@ -13,13 +12,13 @@ const INFORMATION_TO_SHOW = [
 const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
     const [MoviesAs, setMoviesAs] = useState(INFORMATION_TO_SHOW[0])
 
-    const getAge = (secondDate: Date, firstDate: Date, ) => {
+    const getAge = (secondDate: Date, firstDate: Date): number => {
         
         let age: number = firstDate.getFullYear() - secondDate.getFullYear()
         let monthDifference: number = firstDate.getMonth() - secondDate.getMonth()
         
-        let beforeBirthdayInSecondDate: boolean = ((monthDifference < 0 || monthDifference === 0) 
-        && firstDate.getDate() < secondDate.getDate() )
+        let beforeBirthdayInSecondDate: boolean = (monthDifference < 0  || (monthDifference === 0
+        && firstDate.getDate() < secondDate.getDate()) )
         if (beforeBirthdayInSecondDate) {
             age--
         }
@@ -54,20 +53,30 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
         setMoviesAs(INFORMATION_TO_SHOW[number])  
     }
 
-    
+    useEffect(() => {
+        if(actor.name===undefined) return
+        document.title = actor.name
+    }, [actor.name]);
 
     return(
         <div className="person-info bigger">
-            
-            <div className="person-image-full" style={{backgroundImage: `url(${actor.image})`}}></div>
+            <a target={"_blank"} rel="noreferrer" href={actor.image}>
+                <div title={actor.name} className="person-image-full" style={{backgroundImage: `url(${actor.image})`}}></div>
+            </a>
             <div className="main-content">
                 <div className="container">
                     <h3 style={{marginRight: "1rem"}}>{actor.name}</h3>
                 </div>
                 <div className="movie-description">
-                    <div>
-                        {actor.biography}
-                    </div>
+                    {actor.biography !== ''?
+                        <div>
+                            {actor.biography}
+                        </div>
+                        :
+                        <div>
+                            No information about this actor.
+                        </div>
+                    }           
                 </div>
             </div>
             <div className="Info-panel">

@@ -24,7 +24,7 @@ const ActorList = ({actorList}: {actorList: actorType[]}): JSX.Element => {
                                 <div className="fw-bold">{value.name}</div>
                                 
                                 </div>
-                                <a href={'/search/actor?id=' + value.id}>
+                                <a href={'/search/actor/' + value.id}>
                                     <div className="icon" style={{backgroundImage: imagePath(value.image)}}></div>
                                 </a>
                             </ListGroup.Item>                               
