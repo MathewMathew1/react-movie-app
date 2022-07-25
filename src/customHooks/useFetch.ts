@@ -1,10 +1,7 @@
 import useAsync from "./useAsync";
 import { useEffect, useState } from "react";
 
-const controller = new AbortController()
-const { signal } = controller
 const DEFAULT_OPTIONS = {
-    signal,
     headers: {'Content-type': 'application/json; charset=UTF-8'}
 }
 
@@ -13,17 +10,19 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
     const [optionsToFetch, setOptionsToFetch] = useState(options)
     const [saveToSessionStorageState, setSaveToSessionStorageState] = useState(saveToSessionStorage)
     const [sessionStorageNameState, setSessionStorageNameState] = useState(sessionStorageName)
+    const controller = new AbortController()
+    
 
     useEffect(  () => {
-
         return () => {
             controller.abort()
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     
-    const changeUrl = (newUrl, newOptions, newSaveToSessionStorage=false, newSessionStorageName='') =>{
+    const changeUrl = ({newUrl, newOptions={}, newSaveToSessionStorage=false, newSessionStorageName=''}: 
+        {newUrl: string, newOptions?: any, newSaveToSessionStorage?: boolean, newSessionStorageName?: string}) =>{
         setUrlToFetch(newUrl)
         setOptionsToFetch(newOptions)
         setSessionStorageNameState(newSessionStorageName)
@@ -37,25 +36,26 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
         }
 
         let savedDataExist = saveToSessionStorageState===true && sessionStorage.getItem(sessionStorageNameState)
+
         if(savedDataExist){
             return JSON.parse(sessionStorage.getItem(sessionStorageNameState))
         }
-        
-        const res = await fetch(urlToFetch, { ...DEFAULT_OPTIONS, ...optionsToFetch });
+
+        const { signal } = controller
+        const res = await fetch(urlToFetch, { ...DEFAULT_OPTIONS, ...optionsToFetch, signal });
         if (res.ok){
             let promiseData = res.json()
             if(saveToSessionStorageState){
                 let data = await promiseData
-                console.log(data)
                 sessionStorage.setItem(sessionStorageNameState, JSON.stringify(data))
             }
             
             return promiseData
         }
-        const json = await res.json();
+        const json = await res.json()
+    
+        return await Promise.reject(json)
         
-        
-        return await Promise.reject(json);
     }, [urlToFetch])
 
     return {fetchDataStatus, changeUrl} 
