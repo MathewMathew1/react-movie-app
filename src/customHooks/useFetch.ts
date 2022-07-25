@@ -5,6 +5,8 @@ const DEFAULT_OPTIONS = {
     headers: {'Content-type': 'application/json; charset=UTF-8'}
 }
 
+const LOADING_NOT_FINISHED = "LOADING_NOT_FINISHED"
+
 const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=false, sessionStorageName='') => {
     const [urlToFetch, setUrlToFetch] = useState(url)
     const [optionsToFetch, setOptionsToFetch] = useState(options)
@@ -32,7 +34,7 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
     
     const fetchDataStatus = useAsync(async () => {
         if(urlToFetch === ''){
-            return
+            return LOADING_NOT_FINISHED
         }
 
         let savedDataExist = saveToSessionStorageState===true && sessionStorage.getItem(sessionStorageNameState)
