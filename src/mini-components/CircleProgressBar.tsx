@@ -1,6 +1,6 @@
 
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const SCORES = {
     MAXSCORE: 10,
@@ -9,7 +9,12 @@ const SCORES = {
 }
 
 const CircleProgressBar  = ({rating, number}: { rating: number, number?: number}): JSX.Element => {
-    
+    const [numberRounded, setNumberRounded] = useState(number)
+
+    useEffect(() => {
+        setNumberRounded(Math.round(rating*10)/ 10)
+
+    }, [rating]);
 
     const rotateProgressBar = (): void => {
         let percentRating = rating
@@ -68,7 +73,7 @@ const CircleProgressBar  = ({rating, number}: { rating: number, number?: number}
     return (
         <div className="circular">
             <div className="inner"></div>
-            <div className="number">{rating}</div>
+            <div className="number">{numberRounded}</div>
             <div className="circle" >
                 <div className="bar left">
                     <div id={"left "+number} className="progress"></div>
