@@ -1,14 +1,13 @@
 
 import { tvShowType } from "../../types/types";
 import CircleProgressBar from "../../mini-components/CircleProgressBar"
-import { ListGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import RatingLabel from "../../mini-components/RatingLabel";
-import person from "../../person.png"
-import EpisodePreview from "../EpisodePreview";
+import EpisodePreview from "./EpisodePreview";
 import {BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import { Table } from "react-bootstrap";
 import ActorList from "../Actors/ActorList";
+import ReviewList from "../Reviews/ReviewList";
+import RatingMovie from "../../mini-components/RatingMovie";
 
 const INFORMATION_TO_SHOW = [
     'Info',
@@ -26,27 +25,15 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
 
     }
 
-    const imagePath = (UrlString: string): string => {
-        if(UrlString===''){
-            return `url(${person})`
-        }
-        return `url(${UrlString})`
-    }
-
     useEffect(() => {
         document.title = tvShow.name
     }, [tvShow.name]);
 
-    const date = (date: string): string =>{
-        let dateOfCreation = new Date(date)
-        return dateOfCreation.getDate() + "/" + (dateOfCreation.getMonth()+1)+ "/" + dateOfCreation.getFullYear()
-    }
-
-    const isShowInProduction = (): string => {
+    const isShowInProduction = (): boolean => {
         if(tvShow.inProduction){
-            return "yes"
+            return true
         }
-        return "no"
+        return false
     }
 
     const changeSelected = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, number: number): void => {
@@ -63,9 +50,14 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
 
     return (
         <div className="full-movie bigger">
-            
-            <div className="background-image" style={{backgroundImage: `url(${tvShow.image})`}}></div>
-         
+            <div style={{position: "relative"}}>
+                <div className="imageContainer" style={{display: "flex", justifyContent: "center"}}>
+                    <a target={"_blank"} rel="noreferrer" href={tvShow.image} >
+                        <img alt={tvShow.name} src={`${tvShow.image}`} className="movie-image"></img>
+                    </a>
+                </div>
+                <RatingMovie id={tvShow.id} mediaType={"tv"}></RatingMovie>
+            </div>
             <ActorList actorList={tvShow.actorList}></ActorList>
             <div className="container">
                 <h3 style={{marginRight: "1rem"}}>{tvShow.name}</h3>
@@ -80,18 +72,16 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
             </div>
             <div className="Info-panel">
                 <div className="header black top">
-
                     <div className="selector">
-                
                         <div onClick={(e) => changeSelected(e, 0) } className="anchor">
                             <h3>
-                                <span  className="no_click">{INFORMATION_TO_SHOW[0]}</span>
+                                <span className="no_click">{INFORMATION_TO_SHOW[0]}</span>
                                 <div id="selected category" className="background" ></div>
                             </h3>
                         </div>
                         <div onClick={(e) => changeSelected(e, 1) }  className="anchor" >
                             <h3>
-                                <span  className="no_click"  >{INFORMATION_TO_SHOW[1]}</span> 
+                                <span className="no_click"  >{INFORMATION_TO_SHOW[1]}</span> 
                             </h3>
                         </div>
                         <div onClick={(e) => changeSelected(e, 2) }  className="anchor" >
@@ -125,53 +115,19 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
                         </thead>
                         <tbody>
                             {tvShow.networks.map((value, index) => {
-                                    return(
-                                        <tr key={index}>
-                                            <td>{value.name}</td>
-                                            <td>{value.origin_country}</td>
-                                            <td><img alt={value.name} src={BASE_URL_FOR_IMAGES("w185") + value.logo_path}></img></td>
-                                        </tr>
-                                    )
+                                return(
+                                    <tr key={index}>
+                                        <td>{value.name}</td>
+                                        <td>{value.origin_country}</td>
+                                        <td><img alt={value.name} src={BASE_URL_FOR_IMAGES("w185") + value.logo_path}></img></td>
+                                    </tr>
+                                )
                             })}
                         </tbody>
                     </Table>
                 )}
             </div>
-            <div className="review-list">
-                <h3>Reviews:</h3>
-                { tvShow.reviews.length > 0 ? (
-                    <div className="scrollable">
-                
-                        <ListGroup className="" as="ol" numbered>
-                            
-                            {tvShow.reviews.map((value, index) => {
-                                return(
-                                    <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
-                                        <div className="ms-2 me-auto text-break inline-block">
-                                            <div className="fw-bold  ">
-                                                <div className="container">
-                                                    <div className="icon profile" style={{backgroundImage: imagePath(value.authorDetails.avatar_image)}}></div>
-                                                    {value.author}
-                                                    <span className="date"> {date(value.createdDate)} </span>
-                                                </div>    
-                                                { value.authorDetails.rating!==null ? (
-                                                    <RatingLabel rating={value.authorDetails.rating} number={index}></RatingLabel>
-                                                ):null}
-                                                
-                                            </div>
-                                                {value.content}
-                                        </div>
-
-                                    </ListGroup.Item>                               
-                                )
-                            })}    
-                        </ListGroup>
-                    
-                    </div>
-                ):(
-                    <div>No reviews so far</div>
-                )}    
-            </div>    
+            <ReviewList reviews={tvShow.reviews}></ReviewList>
         </div>  
     )      
 }

@@ -1,18 +1,17 @@
 
+import pageNotFound from "./pageNotFound.png"
 
-import PageNotFound from "./pageNotFound.png"
 
-const MovieNotFound = () => {
-    
-   
+const PageNotFound = () => {
+
 
     return (
         <div className="flex-center">
-            <div className="background-image-whole-page" style={{backgroundImage: `url(${PageNotFound})`}}>
+            <div className="background-image-whole-page" style={{backgroundImage: `url(${pageNotFound})`}}>
                 
             </div>
         </div>
     )
 }
 
-export default MovieNotFound
+export default PageNotFound

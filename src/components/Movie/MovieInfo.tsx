@@ -1,25 +1,19 @@
 import { movieFullType, actorType, movieReview, userReviewInfo } from "../../types/types"
 import Movie from "./Movie"
 import useFetch from "../../customHooks/useFetch"
-
-import queryString from "query-string"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import MovieNotFound from "../NotFound/MovieNotFound"
+import { useParams } from "react-router-dom"
 
-const MovieInfo = ({location}: { location: any}): JSX.Element => {
- 
-    let filter = queryString.parse(location.search)
-    let id = filter["id"]
-    const getMovie = useFetch( BASE_URL_OF_API + `/movie/${id}?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[]) 
-    const getActors = useFetch( BASE_URL_OF_API + `/movie/${id}/credits?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[]) 
-    const getReviews = useFetch( BASE_URL_OF_API + `/movie/${id}/reviews?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[])  
+const MovieInfo = (): JSX.Element => {
 
-    console.log(getMovie)
+    const params = useParams()
+    const getMovie = useFetch( `${BASE_URL_OF_API}/movie/${params.id}?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[]) 
+    const getActors = useFetch( `${BASE_URL_OF_API}/movie/${params.id}/credits?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[]) 
+    const getReviews = useFetch( `${BASE_URL_OF_API}/movie/${params.id}/reviews?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}`,{},[])  
 
     const FullMovieData = (movie: any, actors: any, reviews: any): movieFullType => {
-
-
         let reviewsList: movieReview[] = []
         if(reviews!==undefined){
 

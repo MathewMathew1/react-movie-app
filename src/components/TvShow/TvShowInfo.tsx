@@ -1,27 +1,18 @@
 import { actorType, movieReview, userReviewInfo, tvShowType, episode } from "../../types/types"
 import TvShow from "./TvShow"
 import useFetch from "../../customHooks/useFetch"
-
-import queryString from "query-string"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"
+import { useParams } from "react-router-dom"
+import MovieNotFound from "../NotFound/MovieNotFound"
 
-
-
-
-
-
+const TvShowInfo = (): JSX.Element => {
+    let id = useParams().id
     
-
-const TvShowInfo = ({location}: { location: any}): JSX.Element => {
-
-    let filter = queryString.parse(location.search)
-    let id = filter["id"]
     const getTvShow = useFetch( BASE_URL_OF_API + `/tv/${id}?api_key=054d81c0a2132b241e5db5c64009ef65`,{},[]) 
     const getActors = useFetch( BASE_URL_OF_API + `/tv/${id}/credits?api_key=054d81c0a2132b241e5db5c64009ef65`,{},[]) 
     const getReviews = useFetch( BASE_URL_OF_API + `/tv/${id}/reviews?api_key=054d81c0a2132b241e5db5c64009ef65`,{},[])
-    
-    console.log(getTvShow)
+
 
     const FullMovieData = (tvShow: any, actors: any, reviews: any): tvShowType => {
         let reviewsList: movieReview[] = []
@@ -126,7 +117,7 @@ const TvShowInfo = ({location}: { location: any}): JSX.Element => {
            { !getTvShow.fetchDataStatus.loading && !getActors.fetchDataStatus.loading  ? (
                 <div>
                     { getTvShow.fetchDataStatus.value === undefined ? (
-                        <div className="center informationBox">404 Unable to Tv show</div>
+                        <MovieNotFound/>
                     ):(
                         <TvShow tvShow={FullMovieData(getTvShow.fetchDataStatus.value, getActors.fetchDataStatus.value, getReviews.fetchDataStatus.value)}></TvShow>
                     )}
