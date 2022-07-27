@@ -137,3 +137,31 @@ export enum severityColors {
   warning = "rgb(247, 247, 10)",
   success = "rgb(18, 230, 113)",
 }
+
+type InfoAboutSeance = {
+  adult: boolean,
+  backdrop_path: string,
+  genre_ids: number[],
+  id: number,
+  original_language: string,
+  original_title: string,
+  overview: string,
+  popularity: number,  
+  poster_path: string,
+  vote_average: number,
+  vote_count: number,
+}
+
+export type MovieInfoBackend = InfoAboutSeance & {
+  original_title: string, 
+  release_date: string,
+  title: string,
+  video: boolean,
+}
+
+export type TvShowInfoBackend = InfoAboutSeance & {
+  first_air_date: string,
+  name: string,
+  origin_country: string[],
+  original_name: string,
+}

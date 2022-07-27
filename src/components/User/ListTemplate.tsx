@@ -8,6 +8,7 @@ import LoadingCircle from "../../mini-components/LoadingCircle"
 import { star, watchList } from "../../icons/icons"
 import useArray from "../../customHooks/useArray"
 import { useUpdateSnackbar } from "../../SnackBarContext"
+import { MovieInfoBackend, TvShowInfoBackend } from "../../types/types"
 
 const TOAST_MESSAGES = {
     "favorite add": {text: "Successfully added movie to favorite."},
@@ -38,17 +39,20 @@ const Icon = (colorIcon: boolean, dataToFetch: string): JSX.Element => {
 
 
 const MoviesList = (
-    {movies, changeUserPreference, dataToFetch}:
-    {movies: any|undefined, 
-    changeUserPreference: (mediaType: string, id: number, currentPreferenceOfUser: boolean, index: number, updateBooleanData: (newValue: boolean, index: number) => void) => void,
-    dataToFetch: string}
+    {movies, changeUserPreference, dataToFetch, totalResults}:
+    {
+        movies: MovieInfoBackend[]|undefined, 
+        changeUserPreference: (mediaType: string, id: number, currentPreferenceOfUser: boolean, index: number, updateBooleanData: (newValue: boolean, index: number) => void) => void,
+        dataToFetch: string,
+        totalResults: number
+    }
 ): JSX.Element => {
     const dataMovieUserPreferenceBoolean = useArray<boolean>([])
 
     
     useEffect(() => {   
-        if(movies!==undefined && movies.results){
-            for(let i=0; i<movies.results.length; i++){
+        if(movies!==undefined && movies){
+            for(let i=0; i<movies.length; i++){
                 dataMovieUserPreferenceBoolean.push(true)
             }   
         }
@@ -65,12 +69,12 @@ const MoviesList = (
                 <ListGroup.Item >Something went wrong</ListGroup.Item>
             ):(  
                 <div className="list">
-                    {movies.total_results===0 ?(
+                    {totalResults===0 ?(
                         <ListGroup.Item>You dont have any favorite movie </ListGroup.Item>
                     ):(
                         <div className="scrollable big  ">
                             <ListGroup className="" as="ol"> 
-                                {movies.results.map((value, index) => {
+                                {movies.map((value, index) => {
                                     return(
                                         <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
                                             <div className="ms-2 me-auto text-break inline-block">
@@ -96,17 +100,20 @@ const MoviesList = (
 }
 
 const TvShowList = (
-    {tvShows, changeUserPreference, dataToFetch}:
-    {tvShows: any|undefined, 
-    changeUserPreference: (mediaType: string, id: number, currentPreferenceOfUser: boolean, index: number, updateBooleanData: (newValue: boolean, index: number) => void) => void,
-    dataToFetch: string}
+    {tvShows, changeUserPreference, dataToFetch, totalResults}:
+    {
+        tvShows: TvShowInfoBackend[]|undefined, 
+        changeUserPreference: (mediaType: string, id: number, currentPreferenceOfUser: boolean, index: number, updateBooleanData: (newValue: boolean, index: number) => void) => void,
+        dataToFetch: string,
+        totalResults: number
+    }
 ): JSX.Element => {
     
     const dataTvShowUserPreferenceBoolean = useArray<boolean>([])    
 
     useEffect(() => {
-        if(tvShows!==undefined && tvShows.results){
-            for(let i=0; i<tvShows.results.length; i++){
+        if(tvShows!==undefined && tvShows){
+            for(let i=0; i<tvShows.length; i++){
                 dataTvShowUserPreferenceBoolean.push(true)
             }   
         }
@@ -123,17 +130,17 @@ const TvShowList = (
                 <ListGroup.Item >Something went wrong</ListGroup.Item>
             ):(    
                 <div className="list">    
-                    {tvShows.total_results===0 ?(
+                    {totalResults===0 ?(
                         <ListGroup.Item>You dont have any favorite movie </ListGroup.Item>
                     ):(
                         <div className="scrollable big  ">
                             <ListGroup className="" as="ol"> 
-                            {tvShows.results.map((value, index) => {
+                            {tvShows.map((value, index) => {
                                 return(
                                     <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
                                         <div className="ms-2 me-auto text-break inline-block">
                                             <div className="fw-bold">
-                                                <img alt={value.title} src={BASE_URL_FOR_IMAGES("w92") + value.poster_path}></img>
+                                                <img alt={value.name} src={BASE_URL_FOR_IMAGES("w92") + value.poster_path}></img>
                                                 <a target="blank" href={'/search/tvShow/' + value.id}>{value.name}</a> 
                                                 <span onClick={() => 
                                                     changeUserPreference("tv", value.id, dataTvShowUserPreferenceBoolean.array[index], 
@@ -151,14 +158,15 @@ const TvShowList = (
             </div>
             )}
         </div>
-)
-
+    )
 }
 
 const ListTemplate = ({dataToFetch}: {dataToFetch: string}): JSX.Element => {
     const user = useUser()
     const getDataMovies = useFetch(``,{},[]) 
     const getDataTvShows = useFetch(``,{},[]) 
+
+    console.log(getDataTvShows.fetchDataStatus.value)
     
     const updateSnackBar = useUpdateSnackbar()
 
@@ -236,7 +244,7 @@ const ListTemplate = ({dataToFetch}: {dataToFetch: string}): JSX.Element => {
                             (
                                 <LoadingCircle></LoadingCircle>
                             ):(
-                                <TvShowList tvShows={getDataTvShows.fetchDataStatus.value} 
+                                <TvShowList tvShows={getDataTvShows.fetchDataStatus.value.results} totalResults={getDataTvShows.fetchDataStatus.value.total_results} 
                                     changeUserPreference={changeUserPreference} dataToFetch={dataToFetch}/>
                             )
                         }
@@ -244,7 +252,7 @@ const ListTemplate = ({dataToFetch}: {dataToFetch: string}): JSX.Element => {
                             (
                                 <LoadingCircle></LoadingCircle>
                             ):(
-                                <MoviesList movies={getDataMovies.fetchDataStatus.value} 
+                                <MoviesList movies={getDataMovies.fetchDataStatus.value.results} totalResults={getDataMovies.fetchDataStatus.value.total_results} 
                                     changeUserPreference={changeUserPreference} dataToFetch={dataToFetch} />
                             )
                         }
