@@ -11,7 +11,7 @@ const MovieSearch = (): JSX.Element => {
     const [searchKeyWord, setSearchKeyWord] = useState('')
     const getMovies = useFetch('',{},[]) 
     const [searchParams] = useSearchParams()
-    
+    const getGenres = useFetch( BASE_URL_OF_API + `/genre/movie/list?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US`,{},[], true, 'genres') 
 
     useEffect(() => {
         let url: string =''
@@ -41,7 +41,6 @@ const MovieSearch = (): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams]);
 
-
     useEffect(() => {
         let searchParamsObject = Object.fromEntries([...searchParams])
         let genreId = searchParamsObject["genre_id"] 
@@ -57,6 +56,7 @@ const MovieSearch = (): JSX.Element => {
         }
 
     }, [searchParams]);
+
 
     return(
         <div>

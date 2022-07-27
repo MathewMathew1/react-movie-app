@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Container, FormControl, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { BASE_URL_FOR_IMAGES, BASE_URL_OF_API } from "../../ApiVariables"
 import useFetch from "../../customHooks/useFetch"
@@ -6,7 +6,6 @@ import { useUserUpdate } from "../../UserContext"
 import { camera } from "../../icons/icons"
 import { useUser } from "../../UserContext"
 import { useUpdateSnackbar } from "../../SnackBarContext"
-
 
 const DEFAULT_GRAVATAR = '0f516da7f18d3820b0b2e67919867698'
 
@@ -17,14 +16,50 @@ const WAY_OF_SEARCHING = [
   
 const controller = new AbortController() 
 
-
 const NavbarComponent  = (): JSX.Element => {
     const [wayOfSearching, setWayOfSearching] = useState(WAY_OF_SEARCHING[0])
     const [phraseToSearch, setPhraseToSearch] = useState("")
+    const [hideAutoComplete, setHideAutoComplete] = useState(false) 
+    const [currentActiveSuggestion, setCurrentActiveSuggestion] = useState<null|number>(null)
+    const [possibleSuggestions, setPossibleSuggestions] = useState([])
+    const autoSuggestionContainer = useRef()
+
     const getGenres = useFetch( BASE_URL_OF_API + `/genre/movie/list?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US`,{},[], true, 'genres') 
+    
     const user = useUser()
     const userUpdate = useUserUpdate()
     const updateToast = useUpdateSnackbar()
+
+    useEffect(() => {
+        userUpdate.fetchAllData()
+        
+        return () => {
+          controller.abort()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const checkForPossibleSuggestions = wayOfSearching===WAY_OF_SEARCHING[0] || getGenres.fetchDataStatus.loading===true 
+            || phraseToSearch.length < 1
+        if(checkForPossibleSuggestions) {
+            setPossibleSuggestions([])
+            return
+        }
+        
+        let genres: {id: number, name: string}[] = getGenres.fetchDataStatus.value.genres
+        let newPossibleSuggestions: string[] = []
+
+        for(let i=0;i<genres.length; i++){
+            if(genres[i].name.toLocaleLowerCase().includes(phraseToSearch)){
+                newPossibleSuggestions.push(genres[i].name)
+            }
+        }
+        
+        setHideAutoComplete(false)
+        setCurrentActiveSuggestion(null)
+        setPossibleSuggestions(newPossibleSuggestions)
+    }, [phraseToSearch, wayOfSearching]);
 
     const searchForMovies = (e: React.KeyboardEvent<object>): void => {
         e.preventDefault()
@@ -35,34 +70,25 @@ const NavbarComponent  = (): JSX.Element => {
         
         else if(wayOfSearching===WAY_OF_SEARCHING[1]){
         
-        let genre: string|undefined
-        let id: number|undefined
-        
-        for(let i=0; i < getGenres.fetchDataStatus.value.genres.length; i++){
-            if(getGenres.fetchDataStatus.value.genres[i].name.toLowerCase().includes(phraseToSearch)){
-            genre = getGenres.fetchDataStatus.value.genres[i].name
-            id = getGenres.fetchDataStatus.value.genres[i].id
+            let genre: string|undefined
+            let id: number|undefined
+            for(let i=0; i < getGenres.fetchDataStatus.value.genres.length; i++){
+
+                if(getGenres.fetchDataStatus.value.genres[i].name.toLowerCase().includes(phraseToSearch.toLowerCase())){
+                    genre = getGenres.fetchDataStatus.value.genres[i].name
+                    id = getGenres.fetchDataStatus.value.genres[i].id
+                    
+                }
             }
+            if(id === undefined){
+                return
+            }
+            param = `?genre_id=${id}`
         }
-        if(genre === undefined){
-            return
-        }
-        param = `?genre_id=${id}`
-        }
-        
+        console.log("/search/movies" + param + "&page=1")
         window.location.href = "/search/movies" + param + "&page=1"
 
     }
-
-    useEffect(() => {
-     
-        userUpdate.fetchAllData()
-        
-        return () => {
-          controller.abort()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const Login = async () => {
         let token: string = await getToken()
@@ -89,12 +115,58 @@ const NavbarComponent  = (): JSX.Element => {
 
     const handleKeypress = (event: React.KeyboardEvent<object>): void => {
         //it triggers by pressing the enter key
-        
-        if (event.key === 'Enter') {
+        if(event.key === 'Enter' && currentActiveSuggestion !== null){
+            setPhraseToSearch(possibleSuggestions[currentActiveSuggestion])
+            setCurrentActiveSuggestion(null)
+            setHideAutoComplete(true)
+            return
+        }
+
+        if (event.key === 'Escape'){
+            setCurrentActiveSuggestion(null)
+            setHideAutoComplete(true)
+            return
+        }
+
+        if (event.key === 'Enter'){
             searchForMovies(event)
+            return
+        }
+
+        if(wayOfSearching===WAY_OF_SEARCHING[0]) return
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+
+            let changeOfActive = event.key === 'ArrowDown'? 1: -1
+            
+            let element = document.getElementById(`${currentActiveSuggestion} suggestion`)
+            if(element){
+                element.classList.remove("active")
+            }
+            
+            let numberOfNewElement
+
+            if(currentActiveSuggestion===null){
+                numberOfNewElement = changeOfActive === 1? 0: null 
+            }
+            else if(currentActiveSuggestion===possibleSuggestions.length-1 && changeOfActive===1){
+                numberOfNewElement = 0
+            }
+            else if(currentActiveSuggestion===0 && changeOfActive===-1){
+                numberOfNewElement = possibleSuggestions.length-1
+            }
+            else{
+                numberOfNewElement = currentActiveSuggestion + changeOfActive
+            }
+
+            setCurrentActiveSuggestion(numberOfNewElement)
+            let newActiveElement = document.getElementById(`${numberOfNewElement} suggestion`)
+            if(newActiveElement){
+               
+                newActiveElement.focus()
+                newActiveElement.classList.add("active")
+            }
         }
     }
-
 
     const Logout = () => {
         const { signal } = controller
@@ -104,6 +176,11 @@ const NavbarComponent  = (): JSX.Element => {
         })
         .then(response => response.json())
         .then(response => {
+            if(response.error){
+                updateToast.addSnackBar({snackbarText: "Unable to logout, try again", severity: "error"})
+                return
+            }
+
             sessionStorage.removeItem("sessionId")
             updateToast.addSnackBar({snackbarText: "Logged out", severity: "success"})
             userUpdate.setLoggedUser('', false) 
@@ -123,10 +200,8 @@ const NavbarComponent  = (): JSX.Element => {
                 <Navbar.Collapse id="navbarScroll">
                 <Nav 
                     className="me-auto my-2 my-lg-0 align-right-content"
-                    style={{ maxHeight: '100px'}}
                     navbarScroll
-                    >
-                    
+                    >             
                     { !user.logged===true || user.userInfo ===undefined ? (
                         <Nav.Link onClick={()=>Login()}>Login</Nav.Link>
                     ):(
@@ -158,9 +233,29 @@ const NavbarComponent  = (): JSX.Element => {
                                 {WAY_OF_SEARCHING[1]}
                             </NavDropdown.Item>
                         </NavDropdown>
-
-                        <FormControl onKeyDown={handleKeypress} className="search" placeholder='Search' aria-label="Text input with dropdown button" value={phraseToSearch} 
-                            onChange={(e) => setPhraseToSearch(e.target.value.toLowerCase())} />
+                        <div>
+                            <FormControl onKeyDown={handleKeypress} className="search" placeholder='Search' aria-label="Text input with dropdown button"
+                                style={{borderRadius: "0px"}} 
+                                value={phraseToSearch} autoComplete={"ccccc"} onChange={(e) => setPhraseToSearch(e.target.value.toLowerCase())} />
+                            <div className="relative">
+                                {!hideAutoComplete?
+                                    <div className="autocomplete" ref={autoSuggestionContainer} >
+                                        {possibleSuggestions.map((value, index) => {
+                                            return(
+                                                <div id={`${index} suggestion`} className="autocomplete-items" key={`${index} suggestion`} onClick={()=>{
+                                                    setPhraseToSearch(value)
+                                                    setHideAutoComplete(true)
+                                                }}>
+                                                    {value}    
+                                                </div>                             
+                                            )
+                                        })}
+                                    </div>
+                                    :
+                                    null
+                                }
+                            </div>
+                        </div>
 
                 </Nav>
                 </Navbar.Collapse>

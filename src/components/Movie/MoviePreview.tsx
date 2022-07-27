@@ -11,7 +11,6 @@ const VAR = {
 
 const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number}): JSX.Element => {
 
-
     const partOfDescription = (): string => {
         return movie.overview.substring(0, VAR.LENGTH_OF_DESCRIPTION)+ "..."
     }
@@ -28,8 +27,8 @@ const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number
             <Card className="whole-height" >
                 <Link to={urlForMorInfo()}>
                     <Card.Img className="rescaled-image" loading="lazy"  
-                    alt={movie.fullTitle} variant="top" width="100%" height="300px"  
-                    src={movie.image}  />
+                        alt={movie.fullTitle} variant="top" width="100%" height="300px"  
+                        src={movie.image}  />
                 </Link>
                 <RatingMovie id={movie.id} mediaType={movie.media_type}></RatingMovie>
                 <div className="container">

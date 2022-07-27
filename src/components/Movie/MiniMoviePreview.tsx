@@ -24,11 +24,15 @@ const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePre
         return '/search/tvShow/' + movie.id
     }
 
+    const capitalizeFirstLetter = (text: string)=> {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
     return (
         <div>
             <Card className="whole-height" >
                 <div className="container">
-                    <Link to={urlForMorInfo()}>
+                    <Link to={urlForMorInfo()} title={movie.fullTitle}>
                         <img className="rescaled-image" loading="lazy"  alt={movie.fullTitle}  width="100px" src={movie.image} />
                     </Link>
                     <Card.Title className="margin-right">{movie.fullTitle}</Card.Title>
@@ -44,7 +48,9 @@ const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePre
                     <div >Release Date: {movie.releaseDate}</div>
                 </Card.Body>
                 <div className="bottom-right">
-                    <Button as="a" href={urlForMorInfo()} variant="primary">More info</Button>
+                    <Button title={movie.fullTitle} as="a" href={urlForMorInfo()} variant="primary">
+                        {capitalizeFirstLetter(movie.media_type)} Info
+                    </Button>
                 </div>
             </Card>
         </div>  

@@ -151,8 +151,11 @@ const RatingMovie  = ({id, mediaType}:{id: number, mediaType: string}): JSX.Elem
             { user.logged ? (
                 <div className="right-corner">
                     <div >
-                        <div onClick={() => {setShowDropDown(!showDropDown)
-                            fetchUserDataOnMovie(); setShowRating(false)}} className="circle-list">
+                        <div className="circle-list" onClick={() => {
+                                setShowDropDown(!showDropDown) 
+                                fetchUserDataOnMovie();
+                                setShowRating(false)
+                                }} >
                             {list()}
                         </div>
                         {showDropDown ?(

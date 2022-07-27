@@ -1,6 +1,6 @@
 import { actorInfoType, moviePreviewType } from "../../types/types"
 import useFetch from "../../customHooks/useFetch"
-import Actor from "./Actors"
+import Actor from "./Actor"
 import {BASE_URL_OF_API, BASE_URL_FOR_IMAGES} from "../../ApiVariables"
 import LoadingCircle from "../../mini-components/LoadingCircle"
 import { useParams } from "react-router-dom"

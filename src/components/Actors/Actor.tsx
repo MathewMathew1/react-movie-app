@@ -8,7 +8,6 @@ const INFORMATION_TO_SHOW = [
     'Crew'
 ]
 
-
 const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
     const [MoviesAs, setMoviesAs] = useState(INFORMATION_TO_SHOW[0])
 
@@ -24,7 +23,6 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
         }
         return age;
     }
-
 
     const LifeStoryFunction = (): string =>{
         let LifeStory = `Born on ${actor.birthDay} at ${actor.placeOfBirth}`
