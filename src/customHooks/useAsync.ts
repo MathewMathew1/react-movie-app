@@ -17,11 +17,10 @@ const useAsync = (callback, dependencies = []) => {
             .then((newValue)=>{
                 if(newValue===LOADING_NOT_FINISHED) return
                 setValue(newValue)
-                setLoading(false)
             })
             .catch(setError)
             .finally(() => {
-               
+                setLoading(false)
             })
     // eslint-disable-next-line react-hooks/exhaustive-deps        
     }, dependencies)
