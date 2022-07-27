@@ -1,6 +1,3 @@
-
-
-
 import './App.css';
 import HomePage from "./components/MainPage/HomePage";
 import MovieSearch from './components/Movie/MovieSearch';
@@ -20,7 +17,6 @@ import SnackbarProvider from './SnackBarContext';
 import SnackBars from './components/MainPage/SnackBars';
 import { PrivateRoute } from './mini-components/PrivateRoute';
 
-
 const App = () => {
 
   return (
@@ -29,8 +25,7 @@ const App = () => {
         <UserProvider>
           <SnackBars></SnackBars>
           <NavbarComponent></NavbarComponent>
-          <div>
-              
+          <div> 
               <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/login"
@@ -62,13 +57,10 @@ const App = () => {
                     </PrivateRoute>  
                   }
                 />
-                <Route path="/*" element={<PageNotFound/>} />
-                
+                <Route path="/*" element={<PageNotFound/>} /> 
               </Routes>
-          
           </div>
         </UserProvider>
-        
       </SnackbarProvider>
       <div className='footer-page'>
         <img alt={`TMDB`} style={{height: 40, width: 80}} src={LogoIcon}></img>

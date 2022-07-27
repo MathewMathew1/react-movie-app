@@ -166,8 +166,6 @@ const ListTemplate = ({dataToFetch}: {dataToFetch: string}): JSX.Element => {
     const getDataMovies = useFetch(``,{},[]) 
     const getDataTvShows = useFetch(``,{},[]) 
 
-    console.log(getDataTvShows.fetchDataStatus.value)
-    
     const updateSnackBar = useUpdateSnackbar()
 
     const controller = new AbortController()

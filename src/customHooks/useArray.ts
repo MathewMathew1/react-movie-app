@@ -3,11 +3,9 @@ import { useState } from "react";
 const useArray = <T>(defaultValue: T[]) => {
     const [array, setArray] =  useState<T[]>(defaultValue)
 
-
     const push = (value: T): void => {
         setArray(array => [...array, value])
     }
-
 
     const update = (newValue: T, index: number): void => {
 

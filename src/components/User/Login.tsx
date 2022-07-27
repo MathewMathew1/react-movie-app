@@ -29,15 +29,14 @@ const LoginPage = (): JSX.Element => {
                 })
                 .then(response => response.json())
                 .then(response => {
-                console.log(response)  
                 
-                if(response.success === false){
-                    setError("Unable to Login")
-                    return
-                }
-                userUpdate.setLoggedUser(response.session_id, true)
-                sessionStorage.setItem("sessionId", response.session_id)
-                window.location.href = "/"
+                    if(response.success === false){
+                        setError("Unable to Login")
+                        return
+                    }
+                    userUpdate.setLoggedUser(response.session_id, true)
+                    sessionStorage.setItem("sessionId", response.session_id)
+                    window.location.href = "/"
                 })
                 .catch(error=>{console.log(error)})   
             }

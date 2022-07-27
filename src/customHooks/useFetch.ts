@@ -31,7 +31,6 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
         setSaveToSessionStorageState(newSaveToSessionStorage)
     }
     
-    
     const fetchDataStatus = useAsync(async () => {
         if(urlToFetch === ''){
             return LOADING_NOT_FINISHED
