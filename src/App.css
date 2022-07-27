@@ -227,6 +227,10 @@ body {
   justify-content: center;
 }
 
+.pagination-input{
+  width: 4.2rem;
+}
+
 .pagination {
 
   justify-content: center;
