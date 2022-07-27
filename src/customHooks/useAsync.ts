@@ -9,18 +9,15 @@ const useAsync = (callback, dependencies = []) => {
     const [value, setValue] = useState<any>(Object)
 
     const callbackMemoized = useCallback(()=>{
-        var currentdate = new Date(); 
+
         setLoading(true)
         setError(undefined)
         setValue(undefined)
         callback()
             .then((newValue)=>{
                 if(newValue===LOADING_NOT_FINISHED) return
-            
                 setValue(newValue)
                 setLoading(false)
-                
-                console.log(dependencies)
             })
             .catch(setError)
             .finally(() => {
