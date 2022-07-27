@@ -9,14 +9,12 @@ import { useSearchParams } from "react-router-dom"
 
 const MovieSearch = (): JSX.Element => {
     const [searchKeyWord, setSearchKeyWord] = useState('')
-    const [linkToPagination, setLinkToPagination] = useState('')
     const getMovies = useFetch('',{},[]) 
     const [searchParams] = useSearchParams()
     
 
     useEffect(() => {
         let url: string =''
-        let link: string = '?'
 
         let searchParamsObject = Object.fromEntries([...searchParams])
         let page = searchParamsObject["page"]
@@ -24,27 +22,20 @@ const MovieSearch = (): JSX.Element => {
         let searchedName = searchParamsObject["name"]
         
         if(typeof(genreId) == "string" ){
-            
-            link = `genre_id=` + genreId
-
             setSearchKeyWord(genreId)
             document.title = genreId
             url = BASE_URL_OF_API + 
             `/discover/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&page=${page}&include_adult=false` 
             + `&with_genres=${genreId}`
-        
         }
         else if(typeof(searchedName) == "string"){
-            
-            link += `name=` + searchedName  
-
             setSearchKeyWord(searchedName)
             document.title = searchedName
             url = BASE_URL_OF_API + 
             `/search/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&page=${page}` 
             + `&query=${searchedName}`
         }
-        setLinkToPagination(link)
+
 
         getMovies.changeUrl({newUrl: url})
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +69,7 @@ const MovieSearch = (): JSX.Element => {
                                 <div className="movie-preview-container margin-btm-3">
                                     <ShowTwentyMovies movies={getMovies.fetchDataStatus.value.results} number={10}/>
                                 </div>
-                                <PaginationComponent currentPage={getMovies.fetchDataStatus.value.page} link={linkToPagination} numberOfPages={getMovies.fetchDataStatus.value.total_pages}></PaginationComponent>
+                                <PaginationComponent currentPage={getMovies.fetchDataStatus.value.page} numberOfPages={getMovies.fetchDataStatus.value.total_pages}/>
                             </div>
                         ):(
                             <MovieNotFound ></MovieNotFound>
