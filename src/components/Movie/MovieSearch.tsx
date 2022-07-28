@@ -9,9 +9,24 @@ import { useSearchParams } from "react-router-dom"
 
 const MovieSearch = (): JSX.Element => {
     const [searchKeyWord, setSearchKeyWord] = useState('')
-    const getMovies = useFetch('',{},[]) 
     const [searchParams] = useSearchParams()
+    
+    const [genreId, setGenreId] = useState<null|number>()
+    const getMovies = useFetch('',{},[]) 
     const getGenres = useFetch( BASE_URL_OF_API + `/genre/movie/list?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US`,{},[], true, 'genres') 
+
+    useEffect(() => {
+        if(genreId===null|| getGenres.fetchDataStatus.value?.genres===undefined) return
+        console.log(getGenres.fetchDataStatus.value)
+
+        let genre = getGenres.fetchDataStatus.value.genres.find((x:{id: number, name: "string"}) => x.id === genreId)
+        console.log(genre)
+        if(genre===undefined) return
+
+        document.title = genre.name
+        setSearchKeyWord(genre.name)
+
+    }, [genreId, getGenres.fetchDataStatus.value]);
 
     useEffect(() => {
         let url: string =''
@@ -22,8 +37,7 @@ const MovieSearch = (): JSX.Element => {
         let searchedName = searchParamsObject["name"]
         
         if(typeof(genreId) == "string" ){
-            setSearchKeyWord(genreId)
-            document.title = genreId
+            setGenreId(parseInt(genreId))
             url = BASE_URL_OF_API + 
             `/discover/movie?api_key=${process.env.REACT_APP_MOVIEDB_API_KEY}&language=en-US&page=${page}&include_adult=false` 
             + `&with_genres=${genreId}`
