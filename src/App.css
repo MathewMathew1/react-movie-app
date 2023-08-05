@@ -614,7 +614,8 @@ a{
 
 .list-group-item{
   background-color: #424241 !important;
-    color: white !important;
+  color: white !important;
+  border-color: grey !important;
 }
 
 .dropdown-in-preview{
