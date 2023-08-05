@@ -18,15 +18,12 @@ const ReviewList = ({reviews}: { reviews: movieReview[]}): JSX.Element => {
     }
     
     return(
-        <div className="review-list">
-      
+    <div className="review-list">
         <div >
-  
             <h3>Reviews</h3>
             { reviews.length > 0 ? (
                 <div className="scrollable">
-                    <ListGroup className="" as="ol" numbered>
-                        
+                    <ListGroup className="" as="ol" numbered>      
                         {reviews.map((value, index) => {
                             return(
                                 <ListGroup.Item key={index} as="li"className="d-flex justify-content-between align-items-start">
@@ -44,7 +41,6 @@ const ReviewList = ({reviews}: { reviews: movieReview[]}): JSX.Element => {
                                         </div>
                                             {value.content}
                                     </div>
-
                                 </ListGroup.Item>                               
                             )
                         })}    
@@ -53,8 +49,8 @@ const ReviewList = ({reviews}: { reviews: movieReview[]}): JSX.Element => {
             ):(
                 <div>No reviews so far</div>
             )}   
-            </div>  
         </div>  
+    </div>  
     )
 }
 
