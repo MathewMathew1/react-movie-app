@@ -24,7 +24,7 @@ const MoviePreview = ({movie, number}: { movie: moviePreviewType, number: number
 
     return (
         <div>
-            <Card className="whole-height" >
+            <Card className="whole-height card-blacker" >
                 <Link to={urlForMorInfo()}>
                     <Card.Img className="rescaled-image" loading="lazy"  
                         alt={movie.fullTitle} variant="top" width="100%" height="300px"  

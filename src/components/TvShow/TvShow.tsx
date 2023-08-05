@@ -49,7 +49,7 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
 
 
     return (
-        <div className="full-movie bigger">
+        <div className="full-movie">
             <div style={{position: "relative"}}>
                 <div className="imageContainer" style={{display: "flex", justifyContent: "center"}}>
                     <a target={"_blank"} rel="noreferrer" href={tvShow.image} >

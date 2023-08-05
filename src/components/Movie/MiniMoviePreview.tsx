@@ -10,8 +10,7 @@ const VAR = {
     LENGTH_OF_DESCRIPTION: 200
 }
 
-const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePreviewType, number: number, isItTvShow?: boolean}): JSX.Element => {
-
+const MiniMoviePreview = ({movie, number, isItTvShow = false, className = ''}: { movie: moviePreviewType, number: number, isItTvShow?: boolean, className?: string}): JSX.Element => {
 
     const partOfDescription = (): string => {
         return movie.overview.substring(0, VAR.LENGTH_OF_DESCRIPTION)+ "..."
@@ -30,7 +29,7 @@ const MiniMoviePreview = ({movie, number, isItTvShow = false}: { movie: moviePre
 
     return (
         <div>
-            <Card className="whole-height" >
+            <Card className={`whole-height ${className}`} >
                 <div className="container">
                     <Link to={urlForMorInfo()} title={movie.fullTitle}>
                         <img className="rescaled-image" loading="lazy"  alt={movie.fullTitle}  width="100px" src={movie.image} />

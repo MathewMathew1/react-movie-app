@@ -20,12 +20,12 @@ import { PrivateRoute } from './mini-components/PrivateRoute';
 const App = () => {
 
   return (
-    <div >
+    <>
       <SnackbarProvider>
         <UserProvider>
           <SnackBars></SnackBars>
           <NavbarComponent></NavbarComponent>
-          <div> 
+         
               <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/login"
@@ -59,13 +59,13 @@ const App = () => {
                 />
                 <Route path="/*" element={<PageNotFound/>} /> 
               </Routes>
-          </div>
+      
         </UserProvider>
       </SnackbarProvider>
       <div className='footer-page'>
         <img alt={`TMDB`} style={{height: 40, width: 80}} src={LogoIcon}></img>
       </div>
-    </div>
+    </>
   );
 }
 

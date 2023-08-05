@@ -112,7 +112,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
                             <div className="box">
                                 {actor.castPerformance.map((value, index) => {
                                     return(
-                                            <MiniMoviePreview key={index} movie={value} number={index} ></MiniMoviePreview>
+                                            <MiniMoviePreview key={index} movie={value} number={index} className="card-black"></MiniMoviePreview>
                                     )
                                 })}
                             </div>
@@ -124,7 +124,7 @@ const Actor = ({actor}: {actor: actorInfoType}): JSX.Element => {
                             <div className="box">
                                 {actor.crewPerformance.map((value, index) => {
                                     return(
-                                            <MiniMoviePreview key={index} movie={value} number={index} ></MiniMoviePreview>
+                                            <MiniMoviePreview key={index} movie={value} number={index}  className="card-black"></MiniMoviePreview>
                                     )
                                 })}
                             </div>

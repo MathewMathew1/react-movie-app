@@ -15,6 +15,7 @@
   --green-good: #5FB662;
   --black: #444649;
   --black-footer: #444555;
+  --black-primary: #181818
 }
 
 /* width */
@@ -53,7 +54,6 @@
 }
 
 body {
-  padding-bottom: 50px;
   height: 100%;
   background-color: var(--black) !important;
 }
@@ -63,10 +63,6 @@ body {
 }
 
 .footer-page {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
   z-index: 9;
   width: 100%;
   background-color: var(--black-footer);
@@ -152,6 +148,15 @@ body {
 
 .circular:hover{
   transform:scale(1.4);
+}
+
+.card-black{
+  background-color: #3f403f !important;
+}
+
+.card-blacker{
+  background-color: #222121 !important;
+  color: white;
 }
 
 .circular .inner{
@@ -379,11 +384,12 @@ body {
   display: flex;
   position: relative;
   align-items: center;
+  position: relative;
   justify-content: center;
-  height: 30rem;
-  background-repeat:no-repeat;
-  background-size: 100% auto;
-  background-position:centers;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 30rem;
   z-index: 1;
   color: white;
 }
@@ -521,7 +527,8 @@ a{
 
 
 .movie-image{
-  height: 20rem;
+  width: 100%;
+  max-height: 25rem;
   justify-items: center;
   display: flex;
   align-items: center;
@@ -530,7 +537,7 @@ a{
 }
 
 .imageContainer{
-  height: 20rem;
+
   width: 100%;
   display: "flex"; 
   justify-content: "center";
@@ -561,7 +568,7 @@ a{
 }
 
 .scrollable{
-  max-height: 17.5rem;
+  max-height: 22rem;
   overflow: auto;
 }
 
@@ -605,6 +612,11 @@ a{
   mix-blend-mode: difference;
 }
 
+.list-group-item{
+  background-color: #424241 !important;
+    color: white !important;
+}
+
 .dropdown-in-preview{
   background-color: white;
 }
@@ -639,7 +651,7 @@ justify-content: flex-start;
 .secondary-info > *:not(.header){
   flex-grow: 0;
   width: 100%;
-  border-bottom: black solid;
+  border-bottom: grey solid;
 }
 
 .movie-description{
@@ -706,11 +718,14 @@ justify-content: flex-start;
   padding: 10px;
   width: 80%;
   margin: auto;
-  background-color: white;
+  background-color: var(--black-primary);
+  color: white;
+  padding-bottom: 2rem;
 }
 
 .person-info{
   grid-auto-flow: row ;
+  color: white;
 }
 
 .person-info{
@@ -895,6 +910,10 @@ ul {
 @media screen and (max-width: 600px) {
   .profile{
     display: none !important;
+  }
+
+  .movie-image{
+    max-height: max-content;
   }
 
   .hero-intro{

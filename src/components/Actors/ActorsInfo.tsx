@@ -64,21 +64,21 @@ const ActorInfo = (): JSX.Element => {
     }
 
     return(
-        <div>
+        <>
            { !getActor.fetchDataStatus.loading && !getCreditsForActor.fetchDataStatus.loading  ? (
-                <div>
+                <>
                     { getActor.fetchDataStatus.value=== undefined ? (
                         <div className="center informationBox">404 Unable to find Actor</div>
                     ):(
                         <Actor actor={actorData(getActor.fetchDataStatus.value)}></Actor>
                     )}
-                </div>
+                </>
             ):(
                 <div>
                     <LoadingCircle></LoadingCircle>
                 </div> 
             )}
-        </div>     
+        </>     
     )   
 }
 
