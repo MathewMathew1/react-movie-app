@@ -59,6 +59,7 @@ const NavbarComponent  = (): JSX.Element => {
         setHideAutoComplete(false)
         setCurrentActiveSuggestion(null)
         setPossibleSuggestions(newPossibleSuggestions)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phraseToSearch, wayOfSearching]);
 
     const searchForMovies = (e: React.KeyboardEvent<object>): void => {

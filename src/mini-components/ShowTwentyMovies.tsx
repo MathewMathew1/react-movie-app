@@ -1,9 +1,7 @@
-import { useState } from "react"
 import MoviePreview from "../components/Movie/MoviePreview"
 import { moviePreviewTypeFunction } from "../helper"
 
 const ShowTwentyMovies = ({movies, number, mediaType}:{movies: any, number: number, mediaType?: string}): JSX.Element => {
-    const [isMobile, setIsMobile] = useState(false)
     let n = Math.min(20, movies.length)
 
     return (
