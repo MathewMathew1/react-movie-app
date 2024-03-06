@@ -5,6 +5,8 @@ const DEFAULT_OPTIONS = {
     headers: {'Content-type': 'application/json; charset=UTF-8'}
 }
 
+const SESSION_STORAGE_TIME = 5 * 60 * 1000
+
 const LOADING_NOT_FINISHED = "LOADING_NOT_FINISHED"
 
 const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=false, sessionStorageName='') => {
@@ -36,22 +38,33 @@ const useFetch = (url, options = {}, dependencies = [], saveToSessionStorage=fal
             return LOADING_NOT_FINISHED
         }
 
-        let savedDataExist = saveToSessionStorageState===true && sessionStorage.getItem(sessionStorageNameState)
+        const savedData = sessionStorage.getItem(sessionStorageNameState)
+        let savedDataExist = saveToSessionStorageState===true && savedData
 
         if(savedDataExist){
-            return JSON.parse(sessionStorage.getItem(sessionStorageNameState))
+            const { timestamp, data } = JSON.parse(savedData);
+
+            // Check if the data is expired
+            if (Date.now() - timestamp <= SESSION_STORAGE_TIME) {
+                return data;
+            } else {
+                sessionStorage.removeItem(sessionStorageNameState); // Remove expired data
+            }
+
         }
 
         const { signal } = controller
         const res = await fetch(urlToFetch, { ...DEFAULT_OPTIONS, ...optionsToFetch, signal });
-        if (res.ok){
-            let promiseData = res.json()
-            if(saveToSessionStorageState){
-                let data = await promiseData
-                sessionStorage.setItem(sessionStorageNameState, JSON.stringify(data))
+        if (res.ok) {
+            const promiseData = await res.json();
+            if (saveToSessionStorageState) {
+                const data = {
+                    timestamp: Date.now(),
+                    data: promiseData
+                };
+                sessionStorage.setItem(sessionStorageNameState, JSON.stringify(data));
             }
-            
-            return promiseData
+            return promiseData;
         }
         const json = await res.json()
     
