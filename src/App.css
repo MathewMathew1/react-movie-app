@@ -440,9 +440,11 @@ body {
   gap: 1rem;
 }
 
-.header > span{
+.header > div:first-child {
   font-size: 1.5rem;
 }
+
+
 
 .selector{
   display: flex;
@@ -955,7 +957,9 @@ ul {
   }
 
   
-
+  .header{
+    flex-direction: column;
+  }
   
 
 }

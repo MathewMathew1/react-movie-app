@@ -135,7 +135,7 @@ const HomePage = (): JSX.Element => {
                         <LoadingCircle></LoadingCircle>
                     )}
                     <div className="header">
-                        <span> Trending </span>
+                        <div><span> Trending </span></div>
                         <div className="selector">
                     
                             <div onClick={(e) => changeSelected(e, 1) } className="anchor">
@@ -172,7 +172,7 @@ const HomePage = (): JSX.Element => {
                     </div>
                 </div>    
                 <div className="header">
-                    <span> Movie </span>
+                    <div><span> Movie </span></div>
                     <div className="selector">
                 
                         <div onClick={(e) => changeSelected(e, 2) } className="anchor">
@@ -209,7 +209,7 @@ const HomePage = (): JSX.Element => {
                     )}
                 </div>
                 <div className="header">
-                    <span> Tv shows </span>
+                    <div><span> Tv shows </span></div>
                     <div className="selector">
                 
                         <div onClick={(e) => changeSelected(e, 5) } className="anchor">
