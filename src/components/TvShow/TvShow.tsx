@@ -105,7 +105,7 @@ const TvShow = ({tvShow}: { tvShow: tvShowType}): JSX.Element => {
                 ): showedPanel === INFORMATION_TO_SHOW[1] ? (
                     <EpisodePreview episode={tvShow.lastEpisodeToAir} number={1}></EpisodePreview>
                 ):(
-                    <Table striped bordered hover size="sm">
+                    <Table striped bordered hover size="sm" className="company-info-table">
                         <thead>
                             <tr>
                                 <th>Name</th>

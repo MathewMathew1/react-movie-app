@@ -816,6 +816,40 @@ ul {
   margin: 0;
 }
 
+.company-info-table {
+  color: #f1f1f1;
+  background-color: #1e1e1e;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.company-info-table thead th {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border-bottom: 2px solid #444;
+  text-align: left;
+  padding: 0.75rem;
+}
+
+.company-info-table tbody tr {
+  transition: background-color 0.3s ease;
+  color: #ffffff;
+}
+
+.company-info-table tbody tr:nth-child(even) {
+  background-color: #2b2b2b;
+}
+
+.company-info-table tbody tr:hover {
+  background-color: #333333;
+}
+
+.company-info-table td {
+  padding: 0;
+  color: #ffffff !important
+}
+
 /*
 .tooltip {
   position: relative;
