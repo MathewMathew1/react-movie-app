@@ -816,6 +816,10 @@ ul {
   margin: 0;
 }
 
+.episode-preview-card{
+  background-color: #2e2e2e !important;
+}
+
 .company-info-table {
   color: #f1f1f1;
   background-color: #1e1e1e;

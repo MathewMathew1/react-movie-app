@@ -8,15 +8,16 @@ const VAR = {
 }
 
 const EpisodePreview = ({episode, number}: { episode: episode, number: number}): JSX.Element => {
- 
+    
+    console.log(episode)
 
     const partOfDescription = (): string => {
         return episode.overview.substring(0, VAR.LENGTH_OF_DESCRIPTION)+ "..."
     }
 
     return (
-        <div>
-            <Card className="whole-height" style={{overflow: "auto", height: "18rem"}} >
+        <div className="episode-preview">
+            <Card className="whole-height episode-preview-card" style={{overflow: "auto", height: "18rem"}} >
                 <div className="container">
                     <img className="rescaled-image" loading="lazy"  
                     alt={episode.name}  width="200px"   
@@ -27,7 +28,7 @@ const EpisodePreview = ({episode, number}: { episode: episode, number: number}):
                     <CircleProgressBar rating={episode.voteAverage} number={number}></CircleProgressBar>
                     <div className="center-text">{episode.voteCount} votes</div>
                 </div>
-                <Card.Body className="aas">
+                <Card.Body className="episode-preview-body">
                     
                     <Card.Text>
                         {partOfDescription()}
